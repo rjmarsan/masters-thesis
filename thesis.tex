@@ -76,9 +76,13 @@
 \renewcommand{\floatpagefraction}{1}
 \renewcommand{\dblfloatpagefraction}{1}
 
+%Remove this at the end.
+\newcommand{\citetemp}[1]{(#1)}
+\newcommand{\temp}[1]{?#1?}
+
 \begin{document}
 
-\title{System and Framework for Identification of PII Malware on the Android Operating System}
+\title{System and Framework for Identification of Info Malware on the Android Operating System}
 \author{Robert Marsan}
 \department{Computer Science}
 \schools{M.S, University of Illinois at Urbana-Champaign, 2013}
@@ -153,11 +157,6 @@ I would like to thank my advisor Roy H. Campbell for his mentorship and guidance
 \mainmatter
 \include{chapters/intro}
 \include{chapters/background}
-\include{chapters/fs}
-\include{chapters/btree-design}
-\include{chapters/kv}
-\include{chapters/eval}
-\include{chapters/profiling}
 \include{chapters/conclusion}
 
 \appendix*

@@ -1,118 +1,26 @@
 \chapter{Introduction}
 \label{sec:intro}
 
-\textbf{Thesis Statement}: Data structures can be re-designed to provide
-consistent and durable updates on non-volatile byte-addressable memory using
-multi-versioning techniques.\\
+\textbf{Thesis Statement}: Malware on Mobile Operating Systems, especially Android, is better understood when not just analyzing the capabilities of an application, but the expectations the user has as to how it utilizes those capabilities as well.\\
 
-Recent architecture trends and our conversations with memory vendors
-show that DRAM density scaling is facing significant challenges and
-will hit a scalability wall beyond
-40nm~\citep{ITRS07,Mandelman02,Mueller05}.  Additionally, power
-constraints will also limit the amount of DRAM installed in future
-systems~\citep{Bergman08,Freitas08}.  To support next generation
-systems, including large memory-backed data stores such as
-memcached~\citep{Fitzpatrick04} and RAMCloud~\citep{Ousterhout09},
-technologies such as Phase Change Memory~\citep{Raoux08} and
-Memristor~\citep{Strukov08} hold promise as DRAM replacements.
-Because these memory technologies are non-volatile and their 
-cost/power-efficiency is favorable, trends indicate that NVBM can also
-replace disks as the primary storage medium. The latency for accessing
-NVBM will be orders of magnitude faster than disk or flash and we 
-believe that NVBM will provide a single storage layer which has 
-disk-like capacity with DRAM-like performance~\cite{Freitas08}.
 
-Current operating systems use file systems to provide support for
-storage on persistent media like HDDs or SSDs.
-File systems are accessed through the \textit{file interface}
-(open/read/write system calls) and provide support for consistent
-storage of data across failures.
-File systems then send data to the buffer cache, which buffers writes
-and facilitates asynchronous flushing of data to the disk through the
-block layer.
-The block layer schedules I/O operations and is optimized for disks.
-There are examples of systems that bypass the file system interface,
-such as databases, but they, like file systems, still use a buffer
-cache tuned for disks and send data to the block layer.
+The rise of smartphones in the last 6 years has been nothing short of meteoric. Since the launch of the Apple iPhone in 2007, over \temp{1 billion or so} smartphones have been sold, from over \temp{100 or so}\citetemp{Author, Year} manufacturers. These new devices marked an unprecedented shift in our relationship with computers, becoming the center point for many personal endeavors, and superseding almost all previous computing devices from cell phones, to cameras, to GPS devices, and to most uses of a desktop pc \citetemp{Author, Year}. Indeed, smartphones continue to become the focal point of almost all personal computing, and consequently the operating systems they run become more important and powerful.
 
-The low latency access times of NVBM means that such legacy interfaces will not
-be suitable for applications that require high performance. First, the overhead
-of PCI accesses or system calls dominate NVBM's sub-microsecond access
-latencies. More importantly, the file interface imposes a programming model
-where data needs to be serialized and updated at periodic intervals.  This
-imposes a two-level logical separation of data, differentiating between
-in-memory and on-disk copies.  Traditional data stores have to both update the
-in-memory data and, for durability, sync the data to disk with the help of a
-write-ahead log.  Not only does this data movement use extra
-power~\citep{Bergman08} and reduce performance for low-latency NVBM, the
-logical separation also reduces the usable capacity of an NVBM system. We
-believe that the block and file system layers are not suitable for accessing
-NVBM because of the following reasons: 
+Mobile operating systems (mobile OSs), like the PC operating systems of the 1990s, have a few major players that wield the most influence. The two largest operating systems in the mobile area are Android and iOS. Apple’s iOS, made exclusively for the Apple iPhone and iPad, currently runs on over 15\%\citetemp{Author, Year} of all smartphones globally. Google’s Android, released as an open source OS, has many different hardware manufacturers, Samsung, LG, HTC, Motorola, and many more. It currently runs the majority of smartphones globally, with a 75\% marketshare. Some of the less popular, but still significant mobile operating systems are Windows Phone, with 2\%, and Blackberry, with 4\%. 
+
+\temp{Introduce iOS and Android!}
+
+The diversity of hardware that smartphones were designed to replace, along other constraints and features, requires a mobile OS that’s designed from the ground up to deal with many different challenges than the typical PC OS. Some of the main design challenges for a mobile OS are: 
 \begin{smitemize}
-\item Performance: The overhead for updating a byte on persistent
-  storage is significant compared to NVBM access latency. It should
-  also be noted that this is not a new problem and has been observed
-  before by the database community~\cite{Stonebraker81} where systems 
-  like System~R and INGRES maintained a separate buffer pool in userspace to
-  reduce the overhead.
-\item Programming model: The file interface establishes that
-  persistent data should be accessed using read() and write() 
-  calls. Applications serialize data that needs to be stored and have
-  to deserialize the data into in-memory buffers before using
-  it. This imposes CPU overhead for serializing / deserializing and
-  also imposes a programming model where multiple copies need to be
-  maintained.
-\item Durability: Projected designs for integrating NVBM indicate that
-  it can be made available through DIMM slots. This means that the
-  granularity of updates to the device can be the size of a cache line,
-  which is much smaller than the size of a hard-disk sector. The block
-  device layer which flushes data on a page-level granularity is not
-  efficient for making small updates to NVBM.
+
+\item Small memory footprint, battery conscious, and other resource constrictions
+
+\item Access to a wide variety of personally identifiable information (PII)
+
+\item Access a wide array of hardware
+
 \end{smitemize}
+In order to effectively enforce rules on battery consumption, low-latency UI, and personally identifiable information, a new security model was created, centered around the concept of the ‘App’. 
 
-We measure the overhead imposed by each of the intermediate layers in
-Chapter~\ref{sec:fs} and find that the memory bandwidth for serial
-writes of large blocks is 6x higher when updates are made directly to
-memory rather than through the file system and block device layer.
-This difference balloons to 266x when writes are cache-line sized.  
-Instead, we propose a single-level NVBM hierarchy where applications 
-can directly perform loads and stores on non-volatile memory and where
-no distinction is made between a volatile and persistent copy of data.
-In particular, we propose the use of Consistent and Durable Data
-Structures (CDDSs) to store data, a design that allows for the
-creation of log-less systems on non-volatile memory without processor
-modifications.  Described in Chapter~\ref{sec:design}, these data
-structures allow mutations to be safely performed directly (using
-loads and stores) on the single copy of the data and metadata.  We
-have architected CDDSs to use versioning.  Independent of the update
-size, versioning allows the CDDS to atomically move from one
-consistent state to the next, without the extra writes required by
-logging or shadow paging.  Failure recovery simply restores the data
-structure to the most recent consistent version.  Further, while
-complex processor changes to support NVBM have been
-proposed~\citep{Condit09}, we show how primitives to provide
-durability and consistency can be created using existing processors.
+This security model has dramatically changed the nature of mobile software, and in turn, mobile malware. By forcing malware to fit inside of this security sandbox, malware authors must choose to either break out of the box, or work inside of it. This constriction has blurred the definition of mobile malware, and ultimately has profound implications for the user of the mobile device. We will examine these implications, and propose new tools and methods to help understand the nuances of modern malware, as well as provide a framework of tools to detect them.
 
-We have implemented a CDDS B-Tree because of its non-trivial
-implementation complexity and widespread use in storage systems.  Our
-evaluation, presented in Chapter~\ref{sec:eval}, shows that a CDDS
-B-Tree can increase put and get throughput by~74\% and 138\% when
-compared to a memory-backed Berkeley DB B-Tree.
-Tembo\footnote{Swahili for elephant, an animal anecdotally known for
-  its memory.}, our Key-Value (KV) store described in
-Chapter~\ref{sec:kv}, was created by integrating this CDDS B-Tree into
-a widely-used open-source KV system. Using the Yahoo Cloud Serving
-Benchmark~\citep{Cooper10}, we observed that Tembo increases
-throughput by up to 250\%--286\% when compared to
-memory-backed Cassandra, a two-level data store. Further, in order to 
-compare different approaches to providing durable updates, we use 
-Cafegrind~\citep{Chan11}, a tool which monitors a running program and 
-tracks the usage of dynamically allocated data structures. We analyze
-how versioning could help build integrated wear-leveling solutions for
-NVBM by preventing hot spots. We also compare write-ahead logging and
-versioning in terms of the memory bandwidth used over time.
-
-% LocalWords:  backends memcached RAMCloud NoSQL Redis backend exascale PCM PCI
-% LocalWords:  Memristor STTRAM NVBM SATA Versioning NVBM's metadata versioning
-% LocalWords:  CDDS CDDSs KV nm architected Tembo addressability anecdotally
-% LocalWords:  ITRS Mandelman Freitas Ousterhout Raoux Strukov Condit

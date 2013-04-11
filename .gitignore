@@ -1,4 +1,6 @@
 *.acn
+*.fls
+*.loa
 *.acr
 *.alg
 *.aux
