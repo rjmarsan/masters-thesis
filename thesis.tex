@@ -1,0 +1,228 @@
+%%
+%% This is file `thesis-ex.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% uiucthesis2009.dtx  (with options: `example')
+%% 
+\def\fileversion{v2.25a} \def\filedate{2009/10/10}
+%% Package and Class "uiucthesis2009" for use with LaTeX2e.
+\documentclass[edeposit,10pt,fullpage]{uiucthesis2009}
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[numbers]{natbib}
+
+\usepackage{color}
+\usepackage{verbatim}
+
+\usepackage{subfigure}
+\usepackage{url}
+\usepackage{times}
+\usepackage{mathptmx}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[pdftex]{graphicx}
+\usepackage{booktabs}
+
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning,fit,scopes}
+\usetikzlibrary{shapes.multipart}
+
+\colorlet{d}{black!25}
+\colorlet{l}{black!0}
+\newcommand{\btnode}[4]{ \nodepart{#1} #2\\ $[$#3,#4) }
+\newcommand{\btplainnode}[2]{ \nodepart{#1} #2  \\  }
+\tikzset{nd/.style={rectangle split, rectangle split parts=3, draw=black!75, thick,
+            rectangle split horizontal, align=center, rectangle split empty part width=0.5cm,
+            rectangle split part fill={#1}}}
+
+\usepackage[pdfborder={0 0 0}]{hyperref}
+
+\interfootnotelinepenalty=10000  % Split footnote are annoying
+
+\newcommand{\ntaskip}{\vspace{-0.15in}}
+\SetAlgoSkip{ntaskip}
+
+\newenvironment{captiontext}{%
+   \begin{center}%
+     \begin{minipage}{0.99\linewidth}%
+       \renewcommand{\baselinestretch}{0.9}%
+         \sffamily\footnotesize}%
+   {\renewcommand{\baselinestretch}{1.0}%
+      \end{minipage}%
+        \end{center}}
+
+\newenvironment{smitemize}%
+  {\begin{list}{$\bullet$}%
+     {\setlength{\parsep}{0pt}%
+      \setlength{\topsep}{0pt}%
+      \setlength{\itemsep}{2pt}}}%
+  {\end{list}}
+
+\clubpenalty=10000  % Don't allow orphans
+\widowpenalty=10000 % Don't allow widows
+
+% \raggedbottom
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\setcounter{totalnumber}{10}
+\setcounter{topnumber}{10}
+\setcounter{bottomnumber}{10}
+\setcounter{dbltopnumber}{10}
+\renewcommand{\floatpagefraction}{1}
+\renewcommand{\dblfloatpagefraction}{1}
+
+\begin{document}
+
+\title{Storage System Design for Non-Volatile Byte-Addressable memory using Consistent and Durable Data Structures}
+\author{Shivaram Venkataraman}
+\department{Computer Science}
+\schools{M.S, University of Illinois at Urbana-Champaign, 2011}
+\msthesis
+\advisor{Roy H. Campbell}
+\degreeyear{2011}
+\committee{Professor Roy H. Campbell}
+\maketitle
+
+\frontmatter
+
+%% Create an abstract that can also be used for the ProQuest abstract.
+%% Note that ProQuest truncates their abstracts at 350 words.
+\begin{abstract}
+The predicted shift to low cost, non-volatile, byte-addressable memory (e.g.,
+Phase Change Memory and Memristor), the growth of ``big data'', and the
+subsequent emergence of frameworks such as memcached and NoSQL systems require
+us to rethink the design of storage systems.  Today, the predominant method
+available to application programmers for obtaining persistence of data is
+through the file interface which provides access to a filesystem, which in turn
+uses the block layer to provide access to hard disk drives or solid state
+disks.  With the advent of non-volatile byte-addressable memory (NVBM),
+buffered I/O systems designed primarily for hard disks are no longer the most
+efficient design for storage.  We show that the overheads imposed by system
+calls, the file interface, and the block device layer can make NVBM access up
+to 266 times slower compared to directly performing loads and stores.
+
+With performance characteristics closer to DRAM, NVBM demands software designs
+that resemble common heap data structures rather than current systems that
+serialize data via the file interface. To derive the maximum performance, we
+propose the use of single-level data stores where no distinction is made
+between a volatile and a persistent copy of data. For these systems, we present
+Consistent and Durable Data Structures (CDDSs) that, on current hardware,
+allows programmers to safely exploit the low-latency and non-volatile aspects
+of new memory technologies.  CDDSs use versioning to allow atomic updates
+without requiring logging.  The same versioning scheme also enables rollback
+for failure recovery.  When compared to a memory-backed Berkeley DB B-Tree, our
+prototype-based results show that a CDDS B-Tree can increase \textit{put} and
+\textit{get} throughput by~74\% and 138\%. Tembo, a CDDS B-Tree enabled
+distributed Key-Value system, has up to~250\%--286\% higher throughput than
+Cassandra, a two-level data store.
+
+%When compared to Cassandra, a
+%two-level data store, Tembo, a CDDS B-Tree enabled distributed Key-Value
+%system, increases throughput by up to~250\%--286\%.
+
+%We contend that software designed for NVBM will bear a closer resemblance
+%to common heap data structures running on top of DRAM than current systems
+% that serialize data via the file interface.
+
+\end{abstract}
+
+%% Create a dedication in italics with no heading, centered vertically
+%% on the page.
+\begin{dedication}
+To my\\
+Mother and Father
+\end{dedication}
+
+%% Create an Acknowledgements page, many departments require you to
+%% include funding support in this.
+\chapter*{Acknowledgments}
+
+I would like to thank my advisor Roy H. Campbell for his
+invaluable guidance over the course of my Masters degree and for giving me
+the opportunity to be a part of the Systems Research Group. This has helped
+me learn a lot about academic research.  I am deeply indebted to Niraj
+Tolia for encouraging me to work on the design of storage systems for
+non-volatile memory and much of the work described in this thesis was
+born out of our discussions. I would also like to thank Matthew Caesar for
+his encouragement and Parthasarathy Ranganathan, Nathan L. Binkert
+for their valuable inputs towards this work.
+
+I would like to thank Ellick Chan, Abhishek Verma and Reza Farivar for working
+with me on multiple research projects over the last two years. I am also thankful to 
+Alejandro Gutierrez, Mirko Montanari, Cristina Abad, Kevin Larson and Will Dietz
+for the many technical discussions, and all the members of Systems Research Group
+for the vibrant research environment.
+
+My research has been funded by a fellowship from the Siebel Scholars Foundation
+and internships at HP Labs, Palo Alto. I would also like to thank Cinda Heeren
+for the invaluable skills I learnt and the wonderful experience I had as a
+Teaching Assistant. Lynette Llubben, the staff at the Computer Science
+department and the staff at HP Labs have helped me with many administrative
+tasks and I thank them for their help.  My time at Urbana-Champaign has been
+made wonderful by support from many friends and family. Finally I would like to
+thank my parents for their constant support and for encouraging me to
+pursue my dreams.
+
+%% The thesis format requires the Table of Contents to come
+%% before any other major sections, all of these sections after
+%% the Table of Contents must be listed therein (i.e., use \chapter,
+%% not \chapter*).  Common sections to have between the Table of
+%% Contents and the main text are:
+%%
+%% List of Tables
+%% List of Figures
+%% List Symbols and/or Abbreviations
+%% etc.
+
+\tableofcontents
+\listoftables
+\listoffigures
+\listofalgorithms
+
+\addcontentsline{toc}{chapter}{List of Algorithms}
+%% Create a List of Abbreviations. The left column
+%% is 1 inch wide and left-justified
+%\chapter{List of Abbreviations}
+%
+%\begin{symbollist*}
+%\item[CA] Caffeine Addict.
+%\item[CD] Coffee Drinker.
+%\end{symbollist*}
+
+%% Create a List of Symbols. The left column
+%% is 0.7 inch wide and centered
+%\chapter{List of Symbols}
+
+%\begin{symbollist}[0.7in]
+%\item[$\tau$] Time taken to drink one cup of coffee.
+%\item[$\mu$g] Micrograms (of caffeine, generally).
+%\end{symbollist}
+
+\mainmatter
+\include{chapters/intro}
+\include{chapters/background}
+\include{chapters/fs}
+\include{chapters/btree-design}
+\include{chapters/kv}
+\include{chapters/eval}
+\include{chapters/profiling}
+\include{chapters/conclusion}
+
+\appendix*
+
+%\include{Appendix.tex}
+
+\backmatter
+
+\bibliographystyle{abbrvnat}
+%\bibliographystyle{latex8}
+\bibliography{ref}
+
+\end{document}
+\endinput
+%% End of file `thesis-ex.tex'.

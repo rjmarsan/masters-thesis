@@ -1,0 +1,226 @@
+\chapter{Background}
+\label{sec:background}
+
+
+\section{Hardware Non-Volatile Memory}
+
+
+% Background about non-volatile memory in computing systems
+% assumptions about the interface and hardware
+
+
+\begin{table*}[t]
+\begin{small}
+\begin{center}
+\begin{tabular}{c|cccccc}
+Technology & Density 	& \multicolumn{2}{c}{Read/Write Latency} & \multicolumn{2}{c}{Read/Write Energy} & Endurance \\
+           & $\mu$m$^2$/bit & \multicolumn{2}{c}{ns}                 & \multicolumn{2}{c}{pJ/bit}  & writes/bit\\
+\hline
+HDD & 0.00006 & 3,000,000 & 3,000,000 & 2,500 & 2,500 & $\infty$ \\
+Flash SSD (SLC) & 0.00210 & 25,000 & 200,000 & 250 & 250 & $10^5$ \\
+DRAM (DIMM) & 0.00380  & 55 & 55 & 24 & 24 & $10^{18}$ \\
+PCM & 0.00580 & 48 & 150 & 2 & 20 & $10^8$ \\
+Memristor & 0.00580  & 100 & 100 & 2 & 2 & $10^8$
+\end{tabular}
+\end{center}
+\end{small}
+%\vspace{-0.2in}
+\caption{Non-Volatile Memory Characteristics: 2015 Projections}
+\label{tab:nvbm}
+%\vspace{-0.1in}
+\end{table*}
+
+Significant changes are expected in the memory industry. Non-volatile
+flash memories have seen widespread adoption in consumer electronics
+and are starting to gain adoption in the enterprise
+market~\citep{FusionIO}.  Recently, new NVBM memory technologies
+(e.g., PCM, Memristor, and STTRAM) have been demonstrated that
+significantly improve latency and energy efficiency compared to flash.
+
+
+As an illustration, we discuss Phase Change Memory
+(PCM)~\cite{Raoux08}, a promising NVBM technology. PCM is a
+non-volatile memory built out of Chalcogenide-based materials (e.g.,
+alloys of germanium, antimony, or tellurium).  Unlike DRAM and flash
+that record data through charge storage, PCM uses distinct phase
+change material states (corresponding to resistances) to store
+values. Specifically, when heated to a high temperature for an
+extended period of time, the materials crystallize and reduce their
+resistance.  To reset the resistance, a current large enough to melt
+the phase change material is applied for a short period and then
+abruptly cut-off to quench the material into the amorphous phase.  The
+two resistance states correspond to a `0' and `1', but, by varying the
+pulse width of the reset current, one can partially crystallize the
+phase change material and modify the resistance to an intermediate
+value between the `0' and `1' resistances. This range of resistances
+enables multiple bits per cell, and the projected availability of these
+MLC designs is 2012~\citep{ITRS09}.
+
+
+% XXX - Say something about bandwidth below?
+
+Table~\ref{tab:nvbm} summarizes key attributes of potential storage
+alternatives in the next decade, with projected data from recent
+publications, technology trends, and direct industry communication.
+These trends suggest that future non-volatile memories such as PCM or
+Memristors can be viable DRAM replacements, achieving competitive
+speeds with much lower power consumption, and with non-volatility
+properties similar to disk but without the power
+overhead. Additionally, a number of recent studies have identified a
+slowing of DRAM
+growth~\citep{ITRS09,ITRS07,Lee09b,Mandelman02,Mueller05,Qureshi09b,Zhou09}
+due to scaling challenges for charge-based memories.  In conjunction
+with DRAM's power inefficiencies~\citep{Bergman08,Freitas08}, these
+trends can potentially accelerate the adoption of NVBM memories.
+
+NVBM technologies have traditionally been limited by density and
+endurance, but recent trends suggest that these limitations can be
+addressed.  Increased density can be achieved within a single-die
+through multi-level designs, and, potentially with multiple-layers per
+die.  At a single chip level, 3D die stacking using through-silicon
+vias (TSVs) for inter-die communication can further increase
+density. PCM and Memristor also offer higher endurance
+than flash ($10^8$ writes/cell compared to $10^5$ writes/cell for
+flash).  Optimizations at the technology, circuit, and systems levels
+have been shown to further address endurance issues, and more
+improvements are likely as the technologies mature and gain widespread
+adoption.
+
+These trends, combined with the attributes summarized in
+Table~\ref{tab:nvbm}, suggest that technologies like PCM and
+Memristors can be used to provide a single ``unified data-store''
+layer - an assumption underpinning the system architecture in our
+paper. Specifically, we assume a storage system layer that provides
+disk-like functionality but with memory-like performance
+characteristics and improved energy efficiency.  This layer is
+persistent and byte-addressable. Additionally, to best take advantage
+of the low-latency features of these emerging technologies,
+non-volatile memory is assumed to be accessed off the memory bus.
+Like other systems~\citep{Coburn09,Condit09}, we also assume that the
+hardware can perform atomic 8~byte writes.
+%% I took out a phrase about the integration for this audience; might
+%% scare them off too much.
+%  If you want, I can bring it back in.  "or in the future, through 3D
+%  stacking directly on top of the compute logic".
+
+While our assumed architecture is future-looking, it must be pointed
+out that many of these assumptions are being validated individually.
+For example, PCM samples are already available (e.g., from
+Numonyx) and an HP/Hynix collaboration~\citep{HpHynix10} has been announced 
+to bring Memristor to market.  In addition, aggressive capacity roadmaps 
+with multi-level cells and stacking have been discussed by major memory
+vendors.  Finally, previously announced products have also allowed non-volatile
+memory, albeit flash, to be accessed through the memory
+bus~\citep{Spansion08}.
+
+\section{File Systems and Object Stores} 
+
+Traditional disk-based file systems are also faced with the problem of
+performing atomic updates to data structures.  File systems like
+WAFL~\citep{Hitz94} and ZFS~\citep{ZFS} use shadowing to perform atomic
+updates.  Failure recovery in these systems is implemented by restoring
+the file system to a consistent snapshot that is taken periodically.  
+These snapshots are created by shadowing, where every change to a block
+creates a new copy of the block.  Recently, \citet{Rodeh08} presented a
+B-Tree construction that can provide efficient support for shadowing, and
+this technique has been used in the design of BTRFS~\citep{BTRFS}.
+Failure recovery in a CDDS uses a similar notion of restoring the data
+structure to the most recent consistent version.  However the versioning
+scheme used in a CDDS results in fewer data-copies when compared to shadowing.
+
+Arguments for limiting the role of operating systems are not new. Microkernels
+and Exokernels~\cite{Engler95} proposed operating system primitives which allow
+applications to interact more directly with hardware. This is similar to our
+design where we bypass the file system and block device layers for I/O operations.
+Database systems~\cite{Stonebraker81} have also used user space buffer pools
+and direct unbuffered writes to devices to avoid some of the overheads outlined
+in this work. We believe that removing the operating system from the critical
+path of I/O operations will help build better performing higher-level data
+storage systems. Systems like Lightweight Recoverable Virtual
+Memory~\cite{Satyanarayanan94} and QuickStore~\cite{White95} have a similar
+goal and provide support for persistent objects on top virtual memory pages
+while using disks as a backing store.  Earlier efforts at designing persistent
+operating systems~\cite{Dearle94} have also identified the complexity of
+serializing data for persistent storage on file systems. 
+
+\section{Non-Volatile Memory-based Systems}
+
+The use of non-volatile memory to improve performance is not
+new.\ eNVy~\citep{Wu94} designed a non-volatile main memory storage
+system using flash.\ eNVy, however, accessed memory on a
+page-granularity basis and could not distinguish between temporary and
+permanent data.  The Rio File Cache~\citep{Chen96,Lowell97} used
+battery-backed DRAM to emulate NVBM but it did not account for
+persistent data residing in volatile CPU caches.
+Recently there have been many efforts~\citep{Gal05} to optimize
+data structures for flash memory based systems.  FD-Tree~\citep{Li09} and 
+BufferHash~\citep{Anand10} are examples of write-optimized data
+structures designed to overcome high-latency of random writes, while
+FAWN~\citep{Andersen09} presents an energy efficient system design
+for clusters using flash memory.  However, design choices that have
+been influenced by flash limitations (e.g., block addressing and
+high-latency random writes) render these systems suboptimal for NVBM.
+
+% FD-tree - write optimized for flash disks, random writes transformed
+% into sequential ones. logarithmic data structure for reducing the
+% amortized cost of the update. Uses ideas from LSM-tree.
+%
+% Survey paper - describes FTL layer implementations, file systems
+% developed for flash (JFFS, YAFFS, Microsoft FFS etc) and eNVy and
+% a B-Tree, R-Tree layer for flash. All of them are oriented towards
+% making writes sequential during update and handing wear levelling
+% of erase units efficiently. Paper does not talk much about atomic
+% updates or recovery other than mentioning LFS recovery technique. 
+
+\citet{Qureshi09b} have also investigated combining PCM and DRAM into
+a hybrid main-memory system but do not use the non-volatile features
+of PCM\@.  While our work assumes that NVBM wear-leveling happens at a
+lower layer~\citep{Zhou09}, it is worth noting that versioning can
+help wear-leveling as frequently written locations are aged out and
+replaced by new versions.  Most closely related is the work on
+NVTM~\citep{Coburn09} and BPFS~\citep{Condit09}.  NVTM, a more general
+system than CDDS, adds STM-based~\citep{Shavit95} durability to
+non-volatile memory.  However, it requires adoption of an STM-based
+programming model.  Further, because NVTM only uses a metadata log, it
+cannot guarantee failure atomicity.  BPFS, a PCM-based file system,
+also proposes a single-level store.  However, unlike CDDS's exclusive
+use of existing processor primitives, BPFS depends on extensive hardware
+modifications to provide correctness and durability.  Further, unlike
+the data structure interface proposed in this work, BPFS implements a
+file system interface.  While this is transparent to legacy
+applications, the system-call overheads reduce NVBM's low-latency
+benefits.
+
+
+\section{Data Store Trends}
+
+The growth of ``big data''~\citep{EconomistData} and the corresponding
+need for scalable analytics has driven the creation of a number of
+different data stores today.  Best exemplified by NoSQL
+systems~\citep{Cattell10}, the throughput and latency requirements of
+large web services, social networks, and social media-based
+applications have been driving the design of next-generation data
+stores.  In terms of storage, high-performance systems have started
+shifting from magnetic disks to flash over the last decade.  Even more
+recently, this shift has accelerated to the use of large memory-backed
+data stores.  Examples of the latter include
+memcached~\citep{Fitzpatrick04} clusters over 200~TB in
+size~\citep{Kwiatkowski10}, memory-backed systems such as
+RAMCloud~\citep{Ousterhout09}, in-memory
+databases~\citep{Stonebraker07,VoltDB}, and NoSQL systems such as
+Redis~\citep{Redis}.  As DRAM is volatile, these systems provide data
+durability using backend databases (e.g., memcached/MySQL), on-disk
+logs (e.g., RAMCloud), or, for systems with relaxed durability
+semantics, via periodic checkpoints.  We expect that these systems
+will easily transition from being DRAM-based with separate persistent
+storage to being NVBM-based.
+
+
+% http://perspectives.mvdirona.com/2010/07/01/Velocity2010.aspx
+% http://www.scribd.com/doc/4069180/Caching-Performance-Lessons-from-Facebook
+
+% LocalWords:  ccccccc ns pJ HDD SSD SLC DIMM PCM Memristor NVBM STTRAM multi
+% LocalWords:  Chalcogenide MLC Memristors vias TSVs Numonyx roadmaps Spansion
+% LocalWords:  memcached RAMCloud NoSQL Redis backend eNVy BufferHash NVTM BPFS
+% LocalWords:  versioning CDDS STM metadata syscall DRAM's MySQL cccccc Hynix
+% LocalWords:  NVBM's WAFL ZFS BTRFS CDDS's

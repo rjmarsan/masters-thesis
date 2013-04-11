@@ -1,0 +1,100 @@
+\begin{algorithm}[t]
+\dontprintsemicolon
+\linesnumbered
+
+\SetAlFnt{\sf}
+\SetAlCapFnt{\sf}
+
+\SetKwFunction{GetCurrentConsistentVersion}{get\_current\_consistent\_version}
+\SetKwFunction{GetNumEntries}{get\_num\_entries}
+\SetKwFunction{SetNumEntries}{set\_num\_entries}
+\SetKwFunction{CanReuseVersion}{can\_reuse\_version}
+\SetKwFunction{MergeWithSibling}{merge\_with\_sibling}
+\SetKwFunction{Flush}{flush}
+\SetKwFunction{NumLiveEntries}{num\_live\_entries}
+\SetKwFunction{Insert}{insert}
+\SetKwFunction{NewNode}{new\_node}
+\SetKwFunction{Delete}{delete}
+\SetKwFunction{FindEntry}{find\_entry}
+\SetKwFunction{PickSibling}{pick\_sibling}
+\SetKwFunction{CopyFromSibling}{copy\_from\_sibling}
+
+\KwIn{k: key, r: root}
+\Begin(\Delete{k, r}) {
+  $v \leftarrow current\_version$\;
+  $v'\leftarrow v+1$\; 
+  \tcp{Recurse to leaf node (n)}\;
+  %\vdots\;
+  %\BlankLine
+  $y \leftarrow \FindEntry{n, k} $\;
+  $n[y].end \leftarrow v' $\;
+  $l \leftarrow \NumLiveEntries{n} $\;
+  \If(\tcp*[f]{Underflow}){$l = m_{l}$} {  \nllabel{line:i_underflow}
+    $s \leftarrow \PickSibling{n} $\;
+    $l_{s} \leftarrow \NumLiveEntries{s} $\;
+    \If { $l_{s} > 3\times m_{l}$ } {
+      %\tcp{Copy $m_{l}$ keys from sibling} \;
+      \CopyFromSibling{$n$, $s$, $v'$} \;
+    }
+    \lElse {
+      \MergeWithSibling{$n$, $s$, $v'$}\;
+    }
+    \tcp{Update inner nodes}\;
+  } \lElse {
+    \Flush{$n[y]$} \; 
+  }
+  %\BlankLine
+  %\vdots\;
+  %\BlankLine
+  $current\_version \leftarrow v'$\; 
+  \Flush{$current\_version$}\;      
+}
+
+\BlankLine
+\KwIn{n: node, s: sibling, v:version}
+\Begin(\MergeWithSibling{n, s, v}){
+    $y \leftarrow \GetNumEntries{s} $\;
+    \If {$y < 4 \times m_{l}$}{
+%      \tcp{Insert $m_{l}$ keys in sibling}
+      \For {$i = 1$ to $m_{l}$} { 
+        \Insert{$s, n[i].key, v$}\;
+        $n[i].end \leftarrow v$\;
+      }
+    }
+    \Else {
+%      \tcp{Create new node}
+      $nn \leftarrow \NewNode $\;
+      $l_{s} \leftarrow \NumLiveEntries{s} $\;
+      \For {$i = 1$ to $l_{s}$} { 
+        \Insert{$nn, s[i].key, v$}\;
+        $s[i].end \leftarrow v$\;
+      }
+      \For {$i = 1$ to $m_{l}$} { 
+        \Insert{$nn, n[i].key, v$}\;
+        $n[i].end \leftarrow v$\;
+      }
+      \Flush{$nn$} \;
+    }
+    \Flush{$n, s$} \;
+}
+
+
+\BlankLine
+\KwIn{n: node, s: sibling, v: version}
+\Begin(\CopyFromSibling{n, s, v}){
+%    \tcp{Omitted for brevity}
+%    \tcp{Create new node}
+    $nn \leftarrow \NewNode $\;
+    \For {$i = 1$ to $m_{l}$} { 
+      \Insert{$nn, s[i].key$}\;
+      $s[i].end \leftarrow v$\;
+      \Insert{$nn, n[i].key$}\;
+      $n[i].end \leftarrow v$\;
+    }
+    \Flush{$nn, n, s$} \;
+}
+
+\caption{CDDS B-Tree Deletion}
+\label{alg:btree_delete}
+\end{algorithm}
+

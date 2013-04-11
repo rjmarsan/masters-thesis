@@ -1,0 +1,46 @@
+\begin{algorithm}[t]
+\dontprintsemicolon
+\linesnumbered
+
+\SetAlFnt{\sf}
+\SetAlCapFnt{\sf}
+
+\SetKwFunction{GetLastConsistentVersion}{get\_last\_consistent\_version}
+\SetKwFunction{GetNumEntries}{get\_num\_entries}
+\SetKwFunction{SetNumEntries}{set\_num\_entries}
+\SetKwFunction{NumLiveEntries}{num\_live\_entries}
+\SetKwFunction{IsInnerNode}{is\_inner\_node}
+\SetKwFunction{RecoverNode}{recover\_node}
+
+\KwIn{n: node}
+\Begin(\RecoverNode{n}){
+    $v \leftarrow \GetLastConsistentVersion$\; 
+    $shift \leftarrow 0$\;
+    $y \leftarrow \GetNumEntries{n}$\;
+    \For {$i = 1$ to $y$} {
+        \If {$n[i].start > v$} {
+            \tcp{Created during}
+            \tcp{partial operation}
+            $shift++$\;
+        }
+        \Else {
+            \If {$n[i].end > v$} {
+                \tcp{Deleted during}
+                \tcp{partial operation}
+                $n[i].end = 0$\; 
+            }
+            \If { \IsInnerNode{n} } {
+                \RecoverNode{$n[i].child$}\;
+            }
+            \If { $shift \neq 0$ } {
+              $n[i - shift].key = n[i].key$\;
+              $n[i - shift].start = n[i].start$\;
+              $n[i - shift].end = n[i].end$\;
+            }
+        }
+    }
+    \SetNumEntries{$n$, $y - shift$}\;
+}
+\caption{CDDS B-Tree Recovery}
+\label{alg:btree_recovery}
+\end{algorithm}

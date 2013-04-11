@@ -1,0 +1,50 @@
+\begin{algorithm}[t]
+\dontprintsemicolon
+\linesnumbered
+
+\SetAlFnt{\sf}
+\SetAlCapFnt{\sf}
+
+\SetKwFunction{GetLastConsistentVersion}{get\_last\_consistent\_version}
+\SetKwFunction{GetNumEntries}{get\_num\_entries}
+\SetKwFunction{NumLiveEntries}{num\_live\_entries}
+\SetKwFunction{Insert}{insert}
+\SetKwFunction{IsInnerNode}{is\_inner\_node}
+\SetKwFunction{Lookup}{lookup}
+\SetKwFunction{Find}{find}
+
+\KwIn{k: key, r: root}
+\KwOut{val: value}
+\Begin(\Lookup{k, r}){
+    $v \leftarrow  current\_version$\; \nllabel{line:l_version}
+    $n \leftarrow r$\;
+    \While { \IsInnerNode{n} } {  \nllabel{line:l_descend}
+      $entry\_num \leftarrow \Find{k, n, v}$\; 
+      $n \leftarrow n[entry\_num].child$\; \nllabel{line:l_descend_done}
+    }
+    $entry\_num \leftarrow \Find{k, n, v}$\; 
+    \Return{$n[entry\_num].value$}\;
+}
+\BlankLine
+\Begin(\Find{k, n, v}) {
+  $l \leftarrow 0$\;
+  $h \leftarrow \GetNumEntries{n}$\;
+  \While(\tcp*[f]{Binary Serch}) { $l < h$ } { \nllabel{line:l_binary}
+    $m \leftarrow (l + h)/2$\;
+    \If { $k \leq n[m].key$ } {
+      $h \leftarrow m-1$\;
+    } \lElse $l \leftarrow m+1$\;   \nllabel{line:l_binary_done}
+  }
+  \While { $h < \GetNumEntries {n}$ } { \nllabel{line:vcheck}
+    \If { $n[h].start \leq v$ } {
+      \If { $n[h].end > v \quad \| \quad n[h].end = 0$ } {
+        $break$\;
+      }
+    }
+    $h \leftarrow h+1$\;  \nllabel{line:vcheck_done}
+  }
+  \Return{$h$}\;
+}
+\caption{CDDS B-Tree Lookup}
+\label{alg:btree_lookup}
+\end{algorithm}

@@ -1,0 +1,127 @@
+\begin{algorithm}[t]
+\dontprintsemicolon
+\linesnumbered
+
+\SetAlFnt{\sf}
+\SetAlCapFnt{\sf}
+
+\SetKwFunction{GetLastConsistentVersion}{get\_last\_consistent\_version}
+\SetKwFunction{GetNumEntries}{get\_num\_entries}
+\SetKwFunction{SetNumEntries}{set\_num\_entries}
+\SetKwFunction{CanReuseVersion}{can\_reuse\_version}
+\SetKwFunction{SplitInsert}{split\_insert}
+\SetKwFunction{Flush}{flush}
+\SetKwFunction{InsertKey}{insert\_key}
+\SetKwFunction{NumLiveEntries}{num\_live\_entries}
+\SetKwFunction{MinLiveEntries}{min\_live\_entries}
+\SetKwFunction{Insert}{insert}
+\SetKwFunction{NewNode}{new\_node}
+
+\KwIn{k: key, r: root}
+\Begin(\InsertKey{k, r}){
+    $v \leftarrow current\_version$\; \nllabel{line:i_version1}
+    $v'\leftarrow v+1$\; \nllabel{line:i_version2}
+    \tcp{Recurse to leaf node (n)}\;
+    %\vdots\;
+    %\BlankLine
+    $y \leftarrow \GetNumEntries{n} $\;
+    \If(\tcp*[f]{Node Full}){$y = node\_size$} {  \nllabel{line:i_full}
+      \If {entry\_num = \CanReuseVersion{$n, y$}}{
+        \tcp{ Remove the oldest entry }
+        %      (again maintaining sorted order)
+        % \BlankLine
+        % \tcp{ Insert in sorted order} 
+        $n[entry\_num].key \leftarrow k $\;
+        $n[entry\_num].start \leftarrow v' $\;
+        $n[entry\_num].end \leftarrow 0 $\;
+        \Flush{$n[entry\_num]$} \; \nllabel{line:i_nslot_flush}\;
+      }
+      \Else {
+        \SplitInsert{$n$, $k$, $v'$}\;
+        %\BlankLine
+        \tcp{Update inner nodes}\;
+      }
+    }
+    \Else{
+      $n[y].key \leftarrow k $\;
+      $n[y].start \leftarrow v' $\;
+      $n[y].end \leftarrow 0 $\;
+      \Flush{$n[y]$} \; \nllabel{line:i_ny_flush}\;
+    }
+%   XXX - Too confusing. What about split nodes? In that case n is
+%   invalid.
+%    \SetNumEntries{$n$, $y+1$}\;
+    $current\_version \leftarrow v'$\; \nllabel{line:i_upv}
+    \Flush{$current\_version$}\;       \nllabel{line:i_flush_version}
+}
+\BlankLine
+\Begin(\CanReuseVersion{n, y}){
+    $cv \leftarrow \GetLastConsistentVersion$ \;
+    $entry\_num \leftarrow 0$ \;
+    \For {$i = 1$ to $y$} { 
+        \If{$n[i].end > 0$ and $n[i].end < cv$} { \nllabel{line:i_reuse}
+           \If{$entry\_num = 0$ or $i < entry\_num$} { 
+             $entry\_num = i$ \;
+            }
+        }
+    }
+    \Return $entry\_num$ \;
+}
+\caption{CDDS B-Tree Insertion}
+\label{alg:btree_insert}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\dontprintsemicolon
+\linesnumbered
+
+\SetAlFnt{\sf}
+\SetAlCapFnt{\sf}
+
+\SetKwFunction{GetLastConsistentVersion}{get\_last\_consistent\_version}
+\SetKwFunction{GetNumEntries}{get\_num\_entries}
+\SetKwFunction{SetNumEntries}{set\_num\_entries}
+\SetKwFunction{SplitInsert}{split\_insert}
+\SetKwFunction{Flush}{flush}
+\SetKwFunction{InsertKey}{insert\_key}
+\SetKwFunction{NumLiveEntries}{num\_live\_entries}
+\SetKwFunction{MinLiveEntries}{min\_live\_entries}
+\SetKwFunction{Insert}{insert}
+\SetKwFunction{NewNode}{new\_node}
+\KwIn{n: node, k: key, version: v}
+\Begin(\SplitInsert{n, k, v}){
+    $l \leftarrow \NumLiveEntries{n} $\;
+    $m_{l} \leftarrow \MinLiveEntries $\;
+    \If {$l > 4*m_{l}$}{
+      $nn_{1} \leftarrow \NewNode $\;
+      $nn_{2} \leftarrow \NewNode $\;
+      \For {$i = 1$ to $l/2 $} { 
+        \Insert{$nn_{1}, n[i].key, v$}
+      }
+      \For {$i = l/2 + 1$ to $l$} {
+        \Insert{$nn_{2}, n[i].key, v$}
+      }
+      \If {$k < n[l/2].key$} {
+        \Insert{$nn_{1}, k, v$}
+      } 
+      \lElse { 
+        \Insert{$nn_{2}, k, v$} \;
+      }
+      \Flush{$nn_{1}, nn_{2}$} \; \nllabel{line:i_flush_nn1_nn2}
+    }
+    \Else {
+      $nn \leftarrow \NewNode $\;
+      \For {$i = 1$ to $l$} { 
+        \Insert{$nn, n[i].key, v$}
+      }
+      \Insert{$nn, k, v$} \;
+      \Flush{$nn$} \; \nllabel{line:i_flush_nn}
+    }
+    \For {$i = 1$ to $l$} { \nllabel{line:i_endversion}
+      $n[i].end \leftarrow v $\; \nllabel{line:i_endversion_end}
+    }
+    \Flush{$n$} \;
+}
+\caption{CDDS B-Tree Split-Insert}
+\label{alg:btree_split_insert}
+\end{algorithm}
