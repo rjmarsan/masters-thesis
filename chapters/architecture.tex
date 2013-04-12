@@ -50,3 +50,6 @@ The global service serves as the central point of collection of all events. It r
 Two way communication is also possible. An app's local collector can query the global service and acquire a list of events for a given package, among other things. This allows user-level apps to be written to leverage AndroMEDAs findings.
 
 \section{Companion App}
+A companion app was written, to allow the user to inspect the information being gathered by AndroMEDA. The companion app responds to the Intents broadcast by the notifications that AndroMEDA displays to the user. This brings up a history of events logged by that app, and allows the user to take action. The user may report an app, or uninstall it. A simple web service was set up to aggregate these reports.
+
+The companion app is significant because it does not require the AndroMEDA framework to be present on the phone to function. Despite no local logs being available, the companion app can still query the web service, and view event histories that other users have published.
