@@ -56,7 +56,7 @@ To do a broad scale study of Android permissions, we introduce a novel dataset: 
 \section{Global Permission Analysis}
 We first look at the global trends of Permissions in the GPStore. Ideally, we find that access to sensitive PII, and dangerous operations, only is requested by a handful of apps that truly need them. This both increases the user's ability to understand how an app behaves, increases the user's trust in the Permission system, and demonstrates a strong connection between Permission Fingerprint and User-App Agreement. Ultimately, however, we expect to find a system that falls short of these goals.
 
-\begin{figure}[t]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width=1.0\columnwidth]{figs/AllPermissions}
 \caption{Permissions, sorted by how many apps request them in the entire GPStore dataset}
@@ -64,7 +64,7 @@ We first look at the global trends of Permissions in the GPStore. Ideally, we fi
 \end{center}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width=1.0\columnwidth]{figs/AllPermissions_Tail}
 \caption{Less commonly used permissions in the GPStore}
@@ -76,7 +76,7 @@ Figure \ref{fig:allpermissions} shows all major permissions in the GPStore, sort
 
 Figure \ref{fig:tailpermissions} examines the tail permissions in the GPStore. This section contains the bulk of permissions related to PII, with \textit{Record Audio}, \textit{Read Calendar}, \textit{Read SMS}, and so on. It additionally contains many sensitive operations, like \textit{Send SMS} and \textit{System Alert} - which allows apps to draw windows over other apps. These permissions, while being a relatively small portion of the GPStore, still occupy a substantial portion. Indeed, with every dangerous permission, many legitimate use cases can be established, see Figure \ref{tab:permissionsanduses} for examples.
 
-\begin{table*}[t]
+\begin{table*}[h]
 \begin{small}
 \begin{tabular}{p{3cm}|p{12.5cm}}
 Permission & Use Case \\
@@ -103,7 +103,7 @@ Permission & Use Case \\
 \subsection{Per Market Category}
 Overall, we find many PII related permissions are requested a substantial number of times. A number of use cases exist, but it remains to be seen if the apps follow those use cases. To further examine this, we separate the apps in \temp{AndroidMarketDB} into the categories present on the GPStore, and rerun the analysis, seen in Figure \ref{fig:permissionspercategory}.
 
-\begin{figure}[t]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width=1.0\columnwidth]{figs/PermissionsforMarketCategory}
 \caption{Permissions used, as a fraction of total in that category}
@@ -119,9 +119,6 @@ Ultimately, however, some odd patterns can be observed. Despite \textit{Read Con
 
 Overall, we've noted a number of times when patterns in permissions in the GPStore break our expectations of them - potentially violating them User-App Agreement. These could be detected simply from the Permission Fingerprint. We have shown a fairly strong correlation with major PII permissions and Android categories, but demonstrated many cases where they do not line up, both maliciously and with legitimate use cases.
 
-\subsection{Per Popularity}
- 
-\temp{Thinking of moving this after the malware dataset}
 
 
 
@@ -131,17 +128,64 @@ Overall, we've noted a number of times when patterns in permissions in the GPSto
 Next, we compare a malware dataset with \temp{AndroidMarketDB}, in the hopes of finding them as outliers. Ideally, all malicious behavior would show up in the permission fingerprint of an app, so therefore it's unique set of capabilities would stand out in the Google Play Store. Demonstrating that expected behavior and Permission Fingerprint are correlated will be an important part of that. Ultimately, however, we expect this method to have it's shortcomings.
 
 
-\begin{figure}[t]
+\begin{figure}[h]
 \begin{center}
-\includegraphics[width=1.0\columnwidth]{figs/NCSUMalwareDataset}
+\includegraphics[width=0.85\columnwidth]{figs/NCSUMalwareDataset}
 \caption{A summary of the malware families found in the Android Malware Genome Project}
 \label{fig:malwaredboverview}
 \end{center}
 \end{figure}
 
-\subsection{Android Malware Genome Project}
-The dataset we use - the largest academic set of it's kind, is the Android Malware Genome Project\citep{zhou2012dissecting}, from NCSU. Containing almost 1300 samples from 52 families of actual Android malware, it provides the ideal test dataset for Android.
+\begin{table*}[h]
+\begin{small}
+\begin{tabular}{p{3cm}|p{12.5cm}}
+Malware Class & Description \\
+\hline
 
+\textit{Root} & The malware uses a rootkit as a method of attack.    \\
+\textit{Botnet} & The malware exhibits behavior associated with botnets, e.g. accepts remote commands.    \\
+\textit{Banking} & The malware is designed specifically to intercept Banking messages.    \\
+\textit{SMS} & The malware sends Premium SMS messages charged against the user.    \\
+\textit{Info} &  The malware uploads personal information to a remote server, without notifying the user   \\
+\textit{Spyware} & The malware remains on in the background, or has the capability of remotely monitoring the smartphone user.    \\
+\textit{Market} &  The malware was spotted in the official Google Play Store   \\
+
+\end{tabular}
+\end{small}
+%\vspace{-0.2in}
+\caption{Malware Classes found in the Android Malware Genome Project}
+\label{tab:malwaredbcategories}
+%\vspace{-0.1in}
+\end{table*}
+
+
+\subsection{Android Malware Genome Project}
+The dataset we use - the largest academic set of it's kind, is the Android Malware Genome Project\citep{zhou2012dissecting}, from NCSU. Containing almost 1300 samples from 52 families of actual Android malware, it provides the ideal test dataset for Android. We first classify each malware family by its capabilities, according to data aggregated by Spreitzenbarth\citep{spreitzenbarth2013} and Hackmageddon\citep{hackmageddon2011}, with the chart shown in Figure \ref{fig:malwaredboverview}, and the explanation of the classification of capabilities in Table \ref{tab:malwaredbcategories}.
+
+Of the three classes of malware discussed in \ref{sec:malware}, we observe that very few of the malware families use only one attack vector - 6 families, all of which only used \textit{SMS} attacks, and 1, \textit{Pjapps} used none, only being a botnet. Clearly, Android Malware often uses multiple vectors. We also note that 33 of 52 - 63\% of all malware families upload personal information to a remote server. 
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{figs/MalwareCapabiltiesPermissions}
+\caption{Permission Fingerprints of malware with different capabilties, compared to the GPStore total}
+\label{fig:malwarefingerprint}
+\end{center}
+\end{figure}
+
+\subsection{Malware Fingerprints}
+The first step in analyzing whether malware Permission Fingerprints are seen as outliers is to obtain permission fingerprints for all apps in the database. After which, we aggregated the fingerprints by classification of capabilities. The result, Figure \ref{fig:malwarefingerprint}, provides a novel look at malware, it's capabilities, and it's permissions relative to the Android market. The differences in Permission Fingerprints, and therefore capabilities of Malware vs the GPStore total become obvious right away. Malware is far more likely to request access to SMS, particularly reading and writing the database, as well as system operations like disabling the lock screen and reading systme logs. 
+
+However, further insight is given when looking at the fingerprints of malware with a specific capability. \textit{Spyware} apps demonstrate this quite clearly: They request access to location, permission to keep the device on at all times, record audio and send SMS messages. These capabilities are what would be expected out of spyware. Likewise, \textit{Premium SMS} apps requested access to Send SMS messages quite often\footnote{The reason this number is not 100\% is because not all variants of a family of malware known to posses a \textit{Premium SMS} exploit may have that capability}. We also observe that \textit{Botnet} malware occasionally accesses system features like disabling the lock screen and reading system logs.
+
+These obversvations are highly valuble, but things break down when we look at the \textit{Info} category. This permission fingerprint, aside from \textit{Read SMS} and \textit{Write SMS}, does not appear significantly different than the GPStore total, especially when considering the Market Category fluctuations observed earlier. 
+
+
+\section{Popular Apps}
+As we have shown, all categories of malware but Info Stealing show profound differences in permission fingerprints: they are far more likely to access unusual permissions than normal Android apps. However, Info stealing apps did not show such anomalies, making them far easier to hide inside of benign apps - a technique malware writers already use\citep{avastfakeapps}. Thus, if more popular apps have more access to PII, this vector poses a serious threat.
+
+For starters, we note that the metadata in \temp{AndroidMarketDB} isn't accuratekjlsadgkasdg. we first analyze the most popular apps in the entire Google Play Store.
+
+% - we find this to be a popular trend, as documented by Avast!\citep{avastfakeapps}, when they found several knock-offs of popular Android apps in the GPStore that send premium SMS messages and personal info. It is th
 
 
 Malware detection.
