@@ -54,7 +54,7 @@ To do a broad scale study of Android permissions, we introduce a novel dataset: 
 % Should have some figures demonstrating how big this dataset is.
 
 \section{Global Permission Analysis}
-We first look at the global trends of Permissions in the GPStore. Ideally, we find that access to sensitive PII, and dangerous operations, only is requested by a handful of apps that truely need them. This both increases the user's ability to understand how an app behaves, increases the user's trust in the Permission system, and demonstrates a strong connection between Permission Fingerprint and User-App Agreement. Ultimately, however, we expect to find a system that falls short of these goals.
+We first look at the global trends of Permissions in the GPStore. Ideally, we find that access to sensitive PII, and dangerous operations, only is requested by a handful of apps that truly need them. This both increases the user's ability to understand how an app behaves, increases the user's trust in the Permission system, and demonstrates a strong connection between Permission Fingerprint and User-App Agreement. Ultimately, however, we expect to find a system that falls short of these goals.
 
 \begin{figure}[t]
 \begin{center}
@@ -111,23 +111,24 @@ Overall, we find many PII related permissions are requested a substantial number
 \end{center}
 \end{figure}
 
-Immediately, the use cases described in \ref{tab:permissionsanduses} become apparent. A large spike is seen in category \textit{Photography} and \textit{Media \& Video} for permission \textit{Camera}, similarly with \textit{Record Audio}, although it's less visible in \textit{Music \& Audio}. Location data is commonly used in \textit{Weather}, \textit{Transportation} and \textit{Travel}, another use case. \textit{Send SMS} is found predominently in \textit{Communication} and \textit{Social}, another good sign. \textit{Wake Lock} was found heavily in games, music and media, and communication, but less so in other categories, as would be expected for it's use case.
+Immediately, the use cases described in \ref{tab:permissionsanduses} become apparent. A large spike is seen in category \textit{Photography} and \textit{Media \& Video} for permission \textit{Camera}, similarly with \textit{Record Audio}, although it's less visible in \textit{Music \& Audio}. Location data is commonly used in \textit{Weather}, \textit{Transportation} and \textit{Travel}, another use case. \textit{Send SMS} is found predominantly in \textit{Communication} and \textit{Social}, another good sign. \textit{Wake Lock} was found heavily in games, music and media, and communication, but less so in other categories, as would be expected for it's use case.
 
-Ultimately, however, some odd patterns can be observed. Despite \textit{Read Contacts} being popular for apps in \textit{Communication}, \textit{Business} and \textit{Social}, it's also found heavily in the \textit{Brain \& Puzzle} game category. We also find a spike in \textit{Get Running Apps} in games that does not appear to be present in other market categories. Perhaps the oddest observation was the extremely large spike of \textit{Read Browser History} and \textit{Write Browser History} found in the \textit{Personalization} category.
+Ultimately, however, some odd patterns can be observed. Despite \textit{Read Contacts} being popular for apps in \textit{Communication}, \textit{Business} and \textit{Social}, it's also found heavily in the \textit{Brain \& Puzzle} game category. A similar pattern is seen in \textit{Call Phones}; it's predominant category is \textit{Communication}, but it's found in significant amounts in \textit{Medical}, \textit{Shopping}, and \textit{Lifestyle}. We also find a spike in \textit{Get Running Apps} in games that does not appear to be present in other market categories. Perhaps the oddest observation was the extremely large spike of \textit{Read Browser History} and \textit{Write Browser History} found in the \textit{Personalization} category.
 
 \temp{STUDY THESE THINGS AND REPORT WHAT THE HECK IS UP}
 
 Overall, we've noted a number of times when patterns in permissions in the GPStore break our expectations of them - potentially violating them User-App Agreement. These could be detected simply from the Permission Fingerprint. We have shown a fairly strong correlation with major PII permissions and Android categories, but demonstrated many cases where they do not line up, both maliciously and with legitimate use cases.
 
 \subsection{Per Popularity}
-
+ 
+\temp{Thinking of moving this after the malware dataset}
 
 
 
 
 
 \section{Malware Dataset}
-Next, we compare a malware dataset with \temp{AndroidMarketDB}, in the hopes of finding them as outliers. Ideally, all malicious behavior would show up in the permission fingerprint of an app, so therefore it's unique set of capabilties would stand out in the Google Play Store. Demonstrating that expected behavior and Permission Fingerprint are correlated will be an important part of that. Ultimately, however, we expect this method to have it's shortcomings.
+Next, we compare a malware dataset with \temp{AndroidMarketDB}, in the hopes of finding them as outliers. Ideally, all malicious behavior would show up in the permission fingerprint of an app, so therefore it's unique set of capabilities would stand out in the Google Play Store. Demonstrating that expected behavior and Permission Fingerprint are correlated will be an important part of that. Ultimately, however, we expect this method to have it's shortcomings.
 
 
 \begin{figure}[t]
@@ -139,4 +140,8 @@ Next, we compare a malware dataset with \temp{AndroidMarketDB}, in the hopes of 
 \end{figure}
 
 \subsection{Android Malware Genome Project}
-The dataset we use - the largest academic set of it's kind, is the Android Malware Genome Project\citep{zhou2012dissecting}, from NCSU. Containing almost 1300 samples of actual Android malware, it provides the ideal test dataset for Android Malware detection.
+The dataset we use - the largest academic set of it's kind, is the Android Malware Genome Project\citep{zhou2012dissecting}, from NCSU. Containing almost 1300 samples from 52 families of actual Android malware, it provides the ideal test dataset for Android.
+
+
+
+Malware detection.
