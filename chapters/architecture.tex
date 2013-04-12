@@ -1,2 +1,26 @@
 \chapter{Architecture}
 \label{sec:architecture}
+
+\section{Modivation}
+AndroMEDA is designed to complement existing Android security extensions - little attempt was made to replicate the efforts of others. The goal in building AndroMEDA was the minimal amount of changes to the Android system, to extract sufficient information. Portability was important, as code that is easier to port can be more easily adopted. Along with the goal of being lightweight and fast, this further forced the extension to be as simple as possible. The framework aimed to be as independent of hardware as possible, as to work on any device - smartphone, tablet, TV, or future devices like Google Glass. This meant as little changes to the low-level drivers and kernel as possible.
+
+Functionally speaking, the main goals of the framework are to better understand how apps behave, what PII and capabilities they access, and to provide the user with the information necessary to quickly evaluate an app's actions in relation to it's UAA. Logging sensitive events, and finding strategic opportunities to expose them to the user, giving the user actions to perform in reaction, is a key step in mitigating Malware on Android. Ultimately, it's expected that a framework like this will not eliminate malware on android, but rather be part of a larger holistic system.
+
+As a base for our framework, we chose CyanogenMod\citep{cyanogenmod}. CyanogenMod is a 3rd party open source Android distribution created by volunteers. It provides firmware for a wide variety of Android devices, and it's userbase are people seeking to replace their stock OS. This makes it an ideal candidate to fork our framework from - our changes can therefore be incorporated into the over 4.1m+ installs of CyanogenMod\citep{cyanogenmodstats}.
+
+\section{Android Build Architecture}
+Android, as an open source project, is hosted at \url{source.android.com}\citep{androidsource}, as a series of \textit{git} repositories managed by a meta-script called \textit{repo}. It's source tree is organized by project type, ``frameworks'', ``external'' and ``libcore'' being the top level folders we focus on. ``frameworks'' contains all of the java, c++, c, assembly, and other code that compose the core framework that runs on top of the main libraries. ``libcore'' and parts of ``external'' comprise the main libraries. The bulk of the code lies in ``frameworks/base''.
+
+< Quick Android Architecture Overview >
+
+The architecture is organized into two main parts: A collection of hooks in the API, and a system service to collect this information. The collection of hooks in the API calls into a process-wide service that translates them into events that get sent to the global system service.
+
+The hooking mechanisms vary depending on the exact call being instrumented. Android has a standard mechanism for checking permissions in many cases, and we placed a hook where this is enforced. Usually, this takes place during an RPC with the process that owns the data - and such, the remote UID is sent along. Unfortunately many permissions are not checked through this manner. For the more difficult APIs, a static global callback variable is placed in every class we want to instrument. Upon launch of the process, our local collector populates these global variables with callbacks that marshall the data off to the main collection service. A quick null-check and then call are made to the callback at the appropriate times in the API's normal function. Using this method, we are able to instrument any API call, getting more data than simply when the permission is checked. For example, we know when an app starts and stops recording a microphone.
+
+For c and c++ level code, we establish hooks in the JNI to call back to the main object, which then calls the callback accordingly. yeah. This enables us to instrument virtually every aspect of the Android system.
+
+The global service serves as the central point of collection of all events. It runs in it's own process as a singleton, and uses Binders to communicate with other processes, which feed events into it. The service is responsible for logging and processing the events, and taking action on them.
+
+The global service makes use of Android's Binder interface, especially the asynchronous kind. Events can be fired off without worrying about hanging the current thread.
+
+Two way communication is also possible. An app's local collector can query the global service and acquire a list of events for a given package, and other things.
