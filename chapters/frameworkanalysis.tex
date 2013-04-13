@@ -1,4 +1,11 @@
 \chapter{Framework Evaluation}
 \label{sec:framework}
 
-NOTHING HERE YET
+With AndroMEDA, we attempt to build on top of the Android Permission system, to do a better job at enforcing the User-App Agreement. The main reasons why the Permission System failed to differentiate between malware and normal software can be seen as a lack of context and understanding of use. When an app requests a permission, it is granted to the app reguardless of any context - at any time, and reguardless of user consent. The data, after being requested, ultimately can be manipulated and trasmitted to any party without user consent. 
+
+Projects like TaintDroid\citep{enck2010taintdroid} have begun to address the flow of personal data, which aids in the user understanding the use of data. Ultimately, however, much more can be done to address both context and use, which AndroMEDA attempts to address. By instrumenting API calls, AndroMEDA can both inspect context and to some extent use of personal data and other system actions, and by visualizing this information to the user, provides them with the ability to evaulate whether the User-App Agreement has been broken.
+
+\section{Test Introduction}
+To test the effectiveness of AndroMEDA at detecting malicious behavior, we begin with testing apps from the Android Malware Genome Project\citep{zhou2012dissecting}. Unfortunately, we found only 31 of the nearly 1300 samples were designed for Android 2.3 and above, and not a single one targeted Android 4.0 or above. Furthermore, we found many of the samples simply did not run anymore, due to deprecated APIs and other poor coding techniques. 
+
+To test a future-malware oriented framework, it would be ideal to have more sophisticated malware. Rootkits and Premium SMS malware have been addressed by recent versions of Android, so we focus on what we believe to be the future of malware on Android: Sophisticated Info Stealing Apps. We introduce a novel sample of info stealing malware, embedded inside of existing software - designed to silently steal PII and upload it to a remote location. We build off of concepts like SoundComber\citep{schlegel2011soundcomber}
