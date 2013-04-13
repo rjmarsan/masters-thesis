@@ -1,5 +1,13 @@
 \chapter{Conclusion and Future Work}
 \label{sec:conclusion}
+AndroMEDA helps users understand the context in which their Personally Identifiable Information is used, which allows the user to make more informed decisions on whether an app is action maliciously or not. 
+
+We analyzed the current Android security framework: The Permission System, and found it's main flaws were it's lack of addressing context and use, which we generalize into the User-App Agreement - a framework for consenting and trusting specific actions an app may take. Whereas Android Permissions exceeded at defining general capabilities of an app, and these capabilities go a long way in shaping the User-App Agreement, they fail at addressing the context in which the permissions are used, and what they are used for. These key parts of the User-App Agreement were previously unnoticable to the user until AndroMEDA. By giving the user more information on the context and use of permissions, they can evaluate whether they trust those actions, and ultimately whether the app is acting maliciously or not.
 
 \section{Future Work}
 \label{sec:futurework}
+AndroMEDA is, ultimately, not a silver bullet at detecting all Android malware. Projects like TaintDroid and TISSA provide functionality that would greatly enhance the abilities of AndroMEDA to visualize context and use of permissions to the user, and allow them to take action against it. 
+
+AndroMEDA could also benefit greatly from the probablistic modeling of pBMDs and Crowdroid, in correlating user action with permission behavior. These would not replace the need to alert the user, but rather be able to better dictate when to put different classes of alerts to the user, as ultimately the decision of what is malware is up to them.
+
+The weath of data in \temp{AndroidMarketDB} was also not fully explored. We are currently interested in seeing if specific keywords in user reviews correlate with malicious software, or other problematic apps. Many more areas of metadata, like the description, developer, etc, can be further explored, to see if it gives additional insight into the nature of malware on Android.
