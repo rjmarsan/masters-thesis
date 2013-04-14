@@ -224,9 +224,19 @@ Download Range & Number of Apps & Estimated Total Downloads & Percent of All Dow
 %The permissions these apps request is atypical of most apps in the GPStore. \textit{Adobe Flash Player} requests no permissions at all, but this is due to it's role as a browser plugin, and is an outlier in this. 
 
 %\subsection{Apps over 1 Million Downloads}
-\temp{Show the same permission histogram as before, but each row is a different download range}
+%\temp{Show the same permission histogram as before, but each row is a different download range}
 
-Discuss it.
+%Discuss it.
+Figure \ref{fig:topappsfingerprint} shows the permission fingerprints of the top download categories on the Google Play Store. The apps in the lower ranges, from 10K-50K, show a fingerprint very similar to the overall plot. However, as the install counts rise, several very key permissions rise as well. \textit{Get Running Apps}, \textit{Camera}, \textit{Record Audio}, \textit{Read Contacts}, and \textit{Wake Lock} all spike in popularity, the more installs the app has. These permissions are especially sensitive PII related permissions. Towards the very top, even more permissions become used, \textit{Read and Write SMS} and \textit{Read Browser History}, which are also extremely common malware permissions. Overall, aside from \textit{Read and Write SMS}, the \textit{Info Stealing} malware described above has a surprisingly similar permission fingerprint.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{figs/PermissionsforInstallRanges}
+\caption{Permission Fingerprints of apps with different ranges of install counts}
+\label{fig:topappsfingerprint}
+\end{center}
+\end{figure}
+
 
 
 \section{Market Summary}
