@@ -1,9 +1,8 @@
 \chapter{Conclusion and Future Work}
 \label{sec:conclusion}
 \section{Conclusion}
-AndroMEDA helps users understand the context in which their Personally Identifiable Information is used, which allows them to make more informed decisions on whether an app is action maliciously or not. 
+AndroMEDA helps users understand the context in which their Personally Identifiable Information is used, which allows them to make more informed decisions on whether an app is action maliciously or not. In this paper, we introduced 3 key items:
 
-In this paper, we introduced 3 key items:
 \subsection{User-App Agreement}
 %We analyze the state of Android and Permissions, and conclude the need to address the User-App Agreement, which is a framework for consenting and trusting specific actions an app may take. It lies at the heart of classifying Info Theft Malware. Android Permissions address the capabilities of an app, but fail to address the context and use of those capabilities, which are cruicial to trusting an app's actions.
 
@@ -22,3 +21,5 @@ AndroMEDA is, ultimately, not a silver bullet at detecting all Android malware. 
 AndroMEDA could also benefit greatly from the probablistic modeling of pBMDs and Crowdroid, in correlating user action with permission behavior. These would not replace the need to alert the user, but rather be able to better dictate when to put different classes of alerts to the user, as ultimately the decision of what is malware is up to them.
 
 The weath of data in \temp{AndroidMarketDB} was also not fully explored. We are currently interested in seeing if specific keywords in user reviews correlate with malicious software, or other problematic apps. Many more areas of metadata, like the description, developer, etc, can be further explored, to see if it gives additional insight into the nature of malware on Android.
+
+Finally, the concept of the User-App Agreement introduced in this paper can be expanded upon greatly. User Studies of trust in specific actions can greatly increase our understanding of what actions users tend to trust, and when they are untrustworthy. These same user studies could also help show the effectiveness of AndroMEDA in spotting Info Theft Malware.
