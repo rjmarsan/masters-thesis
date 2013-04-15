@@ -15,7 +15,7 @@ Scan Timestamp & Number of Apps &  \\
 \end{tabular}
 \end{small}
 %\vspace{-0.2in}
-\caption{Statistics from \temp{AndroidMarketDB}}
+\caption{Statistics from Android Census}
 \label{tab:marketstats}
 %\vspace{-0.1in}
 \end{table*}
@@ -39,7 +39,7 @@ Metadata & Description \\
 \end{tabular}
 \end{small}
 %\vspace{-0.2in}
-\caption{Metadata from \temp{AndroidMarketDB}}
+\caption{Metadata from Android Census}
 \label{tab:marketmetadata}
 %\vspace{-0.1in}
 \end{table*}
@@ -49,7 +49,7 @@ Metadata & Description \\
 
 
 \section{Market Dataset}
-To do a broad scale study of Android permissions, we introduce a novel dataset: \temp{AndroidMarketDB}. \temp{AndroidMarketDB} contains metadata from \temp{80\%} of all known Android Apps in the GPStore, see Table \ref{tab:marketstats}. This metadata, described in \ref{tab:marketmetadata}, is rich in contextual information about an app. For a period of 1 month in May-June 2012, the GPStore was scanned twice a day. This dataset provides detailed metadata for all areas of the Android market, not just the top percent. Despite the large amount of metadata available, we will focus on the Permissions, leaving most other fields for Future Work\ref{sec:futurework}.
+To do a broad scale study of Android permissions, we introduce a novel dataset: Android Census. Android Census contains metadata from \temp{80\%} of all known Android Apps in the GPStore, see Table \ref{tab:marketstats}. This metadata, described in \ref{tab:marketmetadata}, is rich in contextual information about an app. For a period of 1 month in May-June 2012, the GPStore was scanned twice a day. This dataset provides detailed metadata for all areas of the Android market, not just the top percent. Despite the large amount of metadata available, we will focus on the Permissions, leaving most other fields for Future Work\ref{sec:futurework}.
 
 % Should have some figures demonstrating how big this dataset is.
 
@@ -101,7 +101,7 @@ Permission & Use Case \\
 \end{table*}
 
 \subsection{Per Market Category}
-Overall, we find many PII related permissions are requested a substantial number of times. A number of use cases exist, but it remains to be seen if the apps follow those use cases. To further examine this, we separate the apps in \temp{AndroidMarketDB} into the categories present on the GPStore, and rerun the analysis, seen in Figure \ref{fig:permissionspercategory}.
+Overall, we find many PII related permissions are requested a substantial number of times. A number of use cases exist, but it remains to be seen if the apps follow those use cases. To further examine this, we separate the apps in Android Census into the categories present on the GPStore, and rerun the analysis, seen in Figure \ref{fig:permissionspercategory}.
 
 \begin{figure}[h]
 \begin{center}
@@ -125,7 +125,7 @@ Overall, we've noted a number of times when patterns in permissions in the GPSto
 
 
 \section{Malware Dataset}
-Next, we compare a malware dataset with \temp{AndroidMarketDB}, in the hopes of finding them as outliers. Ideally, all malicious behavior would show up in the permission fingerprint of an app, so therefore it's unique set of capabilities would stand out in the Google Play Store. Demonstrating that expected behavior and Permission Fingerprint are correlated will be an important part of that. Ultimately, however, we expect this method to have it's shortcomings.
+Next, we compare a malware dataset with Android Census, in the hopes of finding them as outliers. Ideally, all malicious behavior would show up in the permission fingerprint of an app, so therefore it's unique set of capabilities would stand out in the Google Play Store. Demonstrating that expected behavior and Permission Fingerprint are correlated will be an important part of that. Ultimately, however, we expect this method to have it's shortcomings.
 
 
 \begin{figure}[h]
@@ -183,7 +183,7 @@ These obversvations are highly valuble, but things break down when we look at th
 \section{Popular Apps}
 As we have shown, all categories of malware but Info Stealing show profound differences in permission fingerprints: they are far more likely to access unusual permissions than normal Android apps. However, Info stealing apps did not show such anomalies, making them far easier to hide inside of benign apps - a technique malware writers already use\citep{avastfakeapps}. Thus, if more popular apps have more access to PII, this vector poses a serious threat.
 
-For starters, we note that the metadata in \temp{AndroidMarketDB} doesn't give precise download measurements, but rather broad ranges. We plot these in Table \ref{tab:downloadstats}, noting the number of apps in each download range, and it's total percent of all downloads in the market. The top percentile, only 9 apps, accounts for an estimated\footnote{The formula for estimated total downloads was taking the average of the download range, and multiplying it by the number of apps} 11\% of all downloads, and apps over 1 million downloads - only 2250 apps in total - account for an estimated 70\% of all downloads in the entire Google Play Store.
+For starters, we note that the metadata in Android Census doesn't give precise download measurements, but rather broad ranges. We plot these in Table \ref{tab:downloadstats}, noting the number of apps in each download range, and it's total percent of all downloads in the market. The top percentile, only 9 apps, accounts for an estimated\footnote{The formula for estimated total downloads was taking the average of the download range, and multiplying it by the number of apps} 11\% of all downloads, and apps over 1 million downloads - only 2250 apps in total - account for an estimated 70\% of all downloads in the entire Google Play Store.
 
 \begin{table*}[t]
 \begin{small}
@@ -213,7 +213,7 @@ Download Range & Number of Apps & Estimated Total Downloads & Percent of All Dow
 \end{tabular}
 \end{small}
 %\vspace{-0.2in}
-\caption{App download statistics from \temp{AndroidMarketDB}}
+\caption{App download statistics from Android Census}
 \label{tab:downloadstats}
 %\vspace{-0.1in}
 \end{table*}
