@@ -6,7 +6,7 @@
 %%
 %% uiucthesis2009.dtx  (with options: `example')
 %% 
-\def\fileversion{v2.25a} \def\filedate{2009/10/10}
+\def\fileversion{v2.25a} \def\filedate{2013/04/17}
 %% Package and Class "uiucthesis2009" for use with LaTeX2e.
 \documentclass[edeposit,10pt,fullpage]{uiucthesis2009}
 
@@ -82,8 +82,8 @@
 
 \begin{document}
 
-\title{AndroMEDA: Android Malware Evaluation, Detection, Analysis}
-\author{Robert Marsan}
+\title{Android Behind the Scenes. Revealing Malware with AndroMEDA}
+\author{Robert Joseph Marsan}
 \department{Computer Science}
 \schools{M.S, University of Illinois at Urbana-Champaign, 2013}
 \msthesis
@@ -97,7 +97,7 @@
 %% Create an abstract that can also be used for the ProQuest abstract.
 %% Note that ProQuest truncates their abstracts at 350 words.
 \begin{abstract}
-The tremendous rise of mobile computing has led to an equally strong rise in mobile malware. Android, the predominant mobile OS, uses a Permission based security system that is ill equipt to deal with many forms of malware, especially Info Theft Malware. To better understand the issue, we introduce the concept of the User-App Agreement - a framework for a user consenting and trusting specific actions an app may take. Using this concept, we examine the Android Permission system with Android Census - a comprehensive app metadata database - and conclude the main pitfall lies in the Permission system's lack of addressing context and use. Finally, we present AndroMEDA, an Android Security Extension which helps provide an understanding of context and use of Android Permissions to users, allowing them to make better judgement over whether actions are trusted or not. We demonstrate how this can be used to mitigate sophisticated Info Theft Malware.
+The tremendous rise of mobile computing has led to an equally strong rise in mobile malware. Android, the predominant mobile OS, uses a Permission based security system that is ill equipt to deal with many forms of malware, especially Info Theft Malware. To better understand the issue, we introduce the concept of the User-App Agreement - a framework for a user consenting and trusting specific actions an app may take. Using this concept, we examine the Android Permission system with Android Census - a comprehensive app metadata database - and conclude the main pitfall lies in the Permission system's lack of addressing context and use. Finally, we present AndroMEDA, an Android Security Extension which helps provide an understanding of context and use of Android Permissions to users, allowing them to make better judgment over whether actions are trusted or not. We demonstrate how this can be used to mitigate sophisticated Info Theft Malware.
 
 \end{abstract}
 
@@ -112,7 +112,11 @@ Parents, Lisa and Mark
 %% include funding support in this.
 \chapter*{Acknowledgments}
 
-I would like to thank my advisor Roy H. Campbell for his mentorship and guidance, as well as Alejandro Gutierrez for putting up with me. \temp{Yeah this needs to be rewritten.}
+I would like to express my most sincere gratitude towards my advisor Roy H. Campbell for his continuous guidance and support of my work, as well as Lynette Lubben for her patience. Roy and Lynette opened many doors for my research, and I could not be more appreciative.
+
+I cannot find the words to express my gratitude towards Alejandro Gutierrez for his tireless support and assistance, and unwavering confidence and dedication. My research would not be what it is today without his contributions and mentorship. %The man's dedication is severely underappreciated, and I hope he sleeps sometime. 
+
+%I need to thank the department but I'm not sure 
 
 %% The thesis format requires the Table of Contents to come
 %% before any other major sections, all of these sections after
@@ -151,6 +155,7 @@ I would like to thank my advisor Roy H. Campbell for his mentorship and guidance
 %\end{symbollist}
 
 \mainmatter
+
 \include{chapters/intro}
 \include{chapters/background}
 \include{chapters/permissions}
@@ -174,3 +179,16 @@ I would like to thank my advisor Roy H. Campbell for his mentorship and guidance
 \end{document}
 \endinput
 %% End of file `thesis-ex.tex'.
+
+
+
+
+
+%TODO:
+% Add GPStore images
+% Put GPSTORE reference in background
+% put GPStore permission image in permissions
+% put in footnote about Android 4.2 READ_STORAGE
+% Expand on permission rejection in Permissions
+% Find official source for improving rootkit protection, cite that later.
+% Show some examples of SMS Trojan - FakeInst
