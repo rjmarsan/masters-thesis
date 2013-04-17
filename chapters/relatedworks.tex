@@ -19,9 +19,9 @@ On the other side of malware detection is automated malware detection. The major
 
 Along similar lines, TrendMicro provides it's solution, App Reputation\citep{trendmicroappreputation}. It runs apps in a ``cloud'' sandbox, watching for connections to suspicious websites, as well as other monitoring. A research project, Paranoid Android\citep{portokalidis2010paranoid}, runs in a similar vein, monitoring apps in a sandboxed Android OS. However, in order to get accurate information on app behavior, actions must be recorded.
 
-\section{Shortcomings}
 However, most all of the frameworks listed above, especially the sandbox tools, assume a clear ruleset to be established classifying malicious behavior vs benign behavior. They require a clear line to be established as to what constitutes trusted behavior vs untrusted. Unfortunately, this is counter to the concept of the UAA, where every individual action has a complex set of rules that result in an acceptable behavior vs unacceptable. Users may also have vastly different rules for what constitutes malicious behavior. Apps that send the Unique Device ID (UDID) and location information to ad networks might be malicious to some users, and perfectly normal to others.
 
 
+\section{Conclusion}
 %This should be the actual conclusion
 The main counter argument to all of these frameworks is the example of SoundComber: It records in the background, looking for PII. Some frameworks and policies may immediately flag this as malware, but one can conceive of perfectly benign apps that would follow this exact same formula: Dictation apps that transcribe speech to text over long portions of time, or audio broadcasting utilities. Apps that take all PII and upload it to a server may be classic malware, or simply a backup utility. Context and Use, and more generally the UAA, is an extremely important part of malware detection that's missing from modern android security frameworks.

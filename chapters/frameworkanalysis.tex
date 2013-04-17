@@ -11,7 +11,8 @@ To test the effectiveness of AndroMEDA at detecting malicious behavior, we begin
 
 To test a future-malware oriented framework, it would be ideal to have more sophisticated malware. Rootkits and Premium SMS malware have been addressed by recent versions of Android, so we focus on what we believe to be the future of malware on Android: Sophisticated Info Theft Apps. The concept of hiding Info Theft Malware inside of benign apps, designed to silently steal PII and perform other unwanted operations, we have dubbed IncognitoWare. Since our analysis of Permissions in the GPStore has shown that popular apps tend to request a large amount of PII-related permissions, we can fit them all within the existing Permission Fingerprint. 
 
-\section{IncognitoWare}
+\section{IncognitoWare Dataset}
+\label{sec:incognitoware}
 IncognitoWare has recently became one of the most popular forms of mobile malware\citep{nq2013}. FakeInst, discussed in Chapter \ref{sec:premiumsms} was a repackaged version of Instagram\citep{instagramandroid} that sent premium SMS messages on start. While admittely basic, more complex versions, like FakeAngry\citep{fakeangry} have been found, imitating popular games, while in the background stealing PII, installing a rootkit and joining a botnet.
 
 We introduce a novel set of research IncognitoWare, as a representitive sample of current and future mobile malware techniques. Our first example sends as much PII as it can find to a remote server, the second silently monitors the phone in the background. We chose not to include a Premium SMS Malware sample, despite it's popularity\citep{nq2013}, due to it being addressed in the latest version of Android. By analyzing our framework with this dataset, we hope to demonstrate the effectiveness of addressing the UAA as a main route to detecting malware.
