@@ -20,6 +20,14 @@ Android was built from the ground up to be composed of strongly isolated modules
 \section{Android Permissions}
 The highly modular and decentralized aspect of Android makes it extremely easy to tap into virtually all Personally Identifiable Information on the device. To protect this, and many other aspects of the system, Android utilizes the Permission security model. The permission security model is a static list of capabilities an app possesses: when presented with this list at install time (see Figure \ref{fig:gpstorepermissions}, a user will either grant the app access to the features, or simply not install the app. When an app requests a permission, the Android system treats it as if the user granted the app that capability. After install, this list will never change unless the app package itself changes, and the user reviews the new permissions.
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{figs/GPStoreInstallScreen}
+\caption{A sample Google Play Store install screen showing the permissions. The user must scroll to see all of them, and click ``Show All'' to see the hidden ones.}
+\label{fig:gpstorepermissions}
+\end{center}
+\end{figure}
+
 Android permissions themselves are much more granular than a typical UNIX permission system. They cover a wide variety of operations, from controlling the sleep state, accessing hardware, accessing PII, and many system operations. Some of the most requested permissions can be seen in \ref{tab:perms}.
 
 %\begin{smitemize}
