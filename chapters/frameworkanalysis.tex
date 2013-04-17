@@ -6,10 +6,33 @@ With AndroMEDA, we attempt to build on top of the Android Permission system, to 
 Projects like TaintDroid\citep{enck2010taintdroid} have begun to address the flow of personal data, which aids in the user understanding the use of data. However, much more can be done to address both context and use, which AndroMEDA addresses. By instrumenting API calls, AndroMEDA can both inspect context use of personal data as well as other important system actions. By presenting this normally hidden information to the user, AndroMEDA provides them with a feedback loop to evaulate whether the User-App Agreement has been broken.
 
 \section{Existing Malware Datasets}
-To test the effectiveness of AndroMEDA at detecting malicious behavior, we begin with testing apps from the Android Malware Genome Project\citep{zhou2012dissecting}, the most comprehensive academic malware dataset. Unfortunately, we found only 31 (2.4\%) of the nearly 1300 samples were designed for Android 2.3 and above, when Android fixed many rootkits, and not a single one targeted Android 4.0 or above, when Android took steps to fix SMS related malware. Furthermore, we found many of the samples simply did not run anymore, due to deprecated APIs and other poor coding techniques.
+%To test the effectiveness of AndroMEDA at detecting malicious behavior, we begin with testing apps from the Android Malware Genome Project\citep{zhou2012dissecting}, the most comprehensive academic malware dataset. Unfortunately, we found only 31 (2.4\%) of the nearly 1300 samples were designed for Android 2.3 and above, when Android fixed many rootkits, and not a single one targeted Android 4.0 or above, when Android took steps to fix SMS related malware. Furthermore, we found many of the samples simply did not run anymore, due to deprecated APIs and other poor coding techniques.
 
 
-To test a future-malware oriented framework, it would be ideal to have more sophisticated malware. Rootkits and Premium SMS malware have been addressed by recent versions of Android, so we focus on what we believe to be the future of malware on Android: Sophisticated Info Theft Apps. The concept of hiding Info Theft Malware inside of benign apps, designed to silently steal PII and perform other unwanted operations, we have dubbed IncognitoWare. Since our analysis of Permissions in the GPStore has shown that popular apps tend to request a large amount of PII-related permissions, we can fit them all within the existing Permission Fingerprint. 
+
+To test the effectiveness of AndroMEDA at detecting malicious behavior, we begin with testing apps from the Android Malware Genome Project\citep{zhou2012dissecting}, the most comprehensive academic malware dataset. Unfortunately, as show in in Figure \ref{fig:malwaresdk}, we found only 31 (2.4\%) of the nearly 1300 samples were designed for Android 2.3 and above, when Android fixed many rootkits, and not a single one targeted Android 4.0 or above, when Android took steps to fix SMS related malware. When looking for malware that runs on Android 2.3 and above that do not use a root exploit, we find only 4 samples - 0.3\% - fit. 
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{figs/MalwareAndSDK}
+\caption{Malware from the Android Malware Genome Project by Android Version }
+\label{fig:malwaresdk}
+\end{center}
+\end{figure}
+
+Of these 4 examples, one, \textit{RogueSPPush}, sends premium SMS messages, but does not request \textit{Send SMS}, rendering it ineffective. The 3 remaining samples, \textit{DogWars}, \textit{GoldDream} and \textit{DroidDreamLight} were Info Theft malware. We found \textit{DroidDreamLight} to be less than worthwhile for testing, due to it's rather benign nature: the worst action it performs is uploading the device's IMEI to a remote server. Finally, \textit{GoldDream} has botnet capabilities, making it difficult to test, due to the lack of an existing botnet.
+
+The remaining app, \textit{DogWars}, makes a good testing app. Made as a ``hacktivist'' app in protest of an existing app\citep{symantecdogwars}, \textit{DogWars} repackages a game with code to send SMS messages to all contacts on the next boot. The screenshots in Figure \ref{fig:dogwars_visual} show how AndroMEDA clearly identifies when DogWars accesses contacts and sends messages, and allows the user to identify it as malware.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{figs/dogwars_detection}
+\caption{AndroMEDA detecting the \textit{DogWars} Malware (annotated in red) }
+\label{fig:dogwars_visual}
+\end{center}
+\end{figure}
+
+We have demonstrated AndroMEDA's ability to identify malware in existing datasets, but in the process we highlighted the shortcomings of the current Android malware datasets. To test a future-malware oriented framework, it would be ideal to have more sophisticated malware. Rootkits and Premium SMS malware have been addressed by recent versions of Android, so we focus on what we believe to be the future of malware on Android: Sophisticated Info Theft Apps. The concept of hiding Info Theft Malware inside of benign apps, designed to silently steal PII and perform other unwanted operations, we have dubbed IncognitoWare. Since our analysis of Permissions in the GPStore has shown that popular apps tend to request a large amount of PII-related permissions, we can fit them all within the existing Permission Fingerprint. 
 
 \section{IncognitoWare Dataset}
 \label{sec:incognitoware}
@@ -23,12 +46,27 @@ Creating IncognitoWare is straightforward. First, an exploit is designed, and co
 \section{Info Theft IncognitoWare}
 Our first example of next-generation IncognitoWare is simple: embed PII stealing code into any app, but only execute it after the user has logged in. This act of logging in is sufficient to bypass automated monitoring tools like Google Bouncer. Only executing the code after the user has performed an action also creates a plausible scenario where the situation might have been intended. Ultimately, however, since nothing is presented to the user, such an action is a clear violation of the UAA, and is seen as malicious. Furthermore, we stay within the permission fingerprint of the original software, meaning not only is it invisible when installing, but blocking the permission outright, or feeding it fuzzed data, would ultimately result in legitimate actions being interfered with. This simple example is powerful enough to steal nearly all highly valuble PII from a device, but inconspicuous enough to be undetected, and legitimate enough to be unblocked.
 
-AndroMEDA, however, can easily detect this example. \temp{Demonstrate this. with screenshots}. Seen in Figure \ref{somethingthatdoesntexistyet}, we demonstrate the malware without AndroMEDA, and in Figure \ref{somethingelse}, with AndroMEDA. After the user logs in, AndroMEDA immediately alerts the user that the PII has been read. The user then reviews it and decides that it's malware.
+AndroMEDA, however, can easily detect this example. \temp{Demonstrate this. with screenshots}. Seen in Figure \ref{somethingthatdoesntexistyet}, we demonstrate the malware without AndroMEDA, and in Figure \ref{fig:infotheft_visual}, with AndroMEDA. After the user logs in, AndroMEDA immediately alerts the user that the PII has been read. The user then reviews it and decides that it's malware.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{figs/lookout_detection}
+\caption{AndroMEDA detecting the Info Theft IncognitoWare embedded within a security app }
+\label{fig:infotheft_visual}
+\end{center}
+\end{figure}
 
 \section{Spyware IncognitoWare}
 Our next example of sophisticated IncognitoWare is desinged to continuously spy on the user, while staying within the capabilities of a trusted app. We first find an app that has all the requirements for spyware: access to location, internet, wake lock, and starting at boot. We then introduce our malware, which is triggered 30 minutes after the first startup - long enough to evade Google Bouncer\citep{mansfield2012android}. After that, the device wakes up every 5 minutes, gathers a location fix, and sends that information to a remote location. As before, many examples exist of apps that use similar behavior for non malicious purposes, making policies to guard against it dfficult.
 
-Once again, AndroMEDA can alert the user of this kind of behavior easily. Figure \ref{something} shows the user installing the app, starting it up, going to the home screen, and eventually noticing the suspicious behavior when the phone is idling. The user then inspects the logs for this app, finds this to be a continuous occurence, and decides that the app is malware.
+Once again, AndroMEDA can alert the user of this kind of behavior easily. Figure \ref{fig:spyware_visual} shows the user installing the app, starting it up, going to the home screen, and eventually noticing the suspicious behavior when the phone is idling. The user then inspects the logs for this app, finds this to be a continuous occurence, and decides that the app is malware.
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1.0\columnwidth]{figs/weather_detection}
+\caption{AndroMEDA detecting the Spyware IncognitoWare embedded within a weather app }
+\label{fig:spyware_visual}
+\end{center}
+\end{figure}
 
 
