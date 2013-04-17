@@ -46,7 +46,7 @@ Creating IncognitoWare is straightforward. First, an exploit is designed, and co
 \section{Info Theft IncognitoWare}
 Our first example of next-generation IncognitoWare is simple: embed PII stealing code into any app, but only execute it after the user has logged in. This act of logging in is sufficient to bypass automated monitoring tools like Google Bouncer. Only executing the code after the user has performed an action also creates a plausible scenario where the situation might have been intended. Ultimately, however, since nothing is presented to the user, such an action is a clear violation of the UAA, and is seen as malicious. Furthermore, we stay within the permission fingerprint of the original software, meaning not only is it invisible when installing, but blocking the permission outright, or feeding it fuzzed data, would ultimately result in legitimate actions being interfered with. This simple example is powerful enough to steal nearly all highly valuble PII from a device, but inconspicuous enough to be undetected, and legitimate enough to be unblocked.
 
-AndroMEDA, however, can easily detect this example. \temp{Demonstrate this. with screenshots}. Seen in Figure \ref{somethingthatdoesntexistyet}, we demonstrate the malware without AndroMEDA, and in Figure \ref{fig:infotheft_visual}, with AndroMEDA. After the user logs in, AndroMEDA immediately alerts the user that the PII has been read. The user then reviews it and decides that it's malware.
+AndroMEDA, however, can easily detect this example, seen in Figure \ref{fig:infotheft_visual}. After the user logs in, AndroMEDA immediately alerts the user that the PII has been read. The user then reviews it and decides that it's malware.
 
 \begin{figure}[h]
 \begin{center}
