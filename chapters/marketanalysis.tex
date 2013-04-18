@@ -4,7 +4,17 @@
 In order to evaluate AndroMEDA effectiveness in identifying malware, it's important to evaluate the ability to identify malware without it. As previously discussed in Chapter \ref{sec:permissions}, Permissions are the single security measure that defends an Android user from malicious software. We show a fundamental disconnect between Permissions and UAA, as conclusive evidence that Permissions should not be the sole security system on Android. In order to study this, we must examine the how Permissions reflect app behavior, and if known malware can be identified with Permissions alone.
 
 
-\begin{table*}[t]
+
+
+
+
+
+
+\section{Android Census}
+To do a broad scale study of Android permissions, we introduce a novel dataset: Android Census\citep{androidcensus}. Android Census contains a rich dataset of metadata of apps in the Google Play Store. We first obtain a list of all packages in the Google Play Store from AndroidPit\citep{androidpit}, a 3rd party source that maintains an up-to-date index. We then crawl the GPStore using this list, and insert the data into a MySQL database. See Table \ref{tab:marketstats} for statistics. The metadata described in \ref{tab:marketmetadata} is rich in contextual information about an app. The GPStore was scanned twice per day, generating over 22 million entries, for a period of 1 month in May-June 2012, after which it was stopped\footnote{We plan on continuing scans in the future}. This dataset provides detailed metadata for all apps included in our package list, including the most common apps, but also a larger dataset of lesser known apps (see Figure \ref{tab:downloadstats}). Despite the large amount of metadata available, we will focus on the Permissions, installs, and category, leaving most other fields for Future Work (see Chapter \ref{sec:futurework}).
+
+
+\begin{table*}[h]
 \begin{small}
 \begin{tabular}{l|lll}
 Scan Timestamp & Number of Apps &  \\
@@ -21,7 +31,7 @@ Scan Timestamp & Number of Apps &  \\
 \end{table*}
 
 
-\begin{table*}[t]
+\begin{table*}[h]
 \begin{small}
 \begin{tabular}{r|l}
 Metadata & Description \\
@@ -44,12 +54,6 @@ Metadata & Description \\
 %\vspace{-0.1in}
 \end{table*}
 
-
-
-
-
-\section{Android Census}
-To do a broad scale study of Android permissions, we introduce a novel dataset: Android Census. Android Census contains metadata from \temp{80\%} of all known Android Apps in the GPStore, see Table \ref{tab:marketstats}. This metadata, described in \ref{tab:marketmetadata}, is rich in contextual information about an app. For a period of 1 month in May-June 2012, the GPStore was scanned twice a day. This dataset provides detailed metadata for all areas of the Android market, not just the top percent. Despite the large amount of metadata available, we will focus on the Permissions, leaving most other fields for Future Work \ref{sec:futurework}.
 
 % Should have some figures demonstrating how big this dataset is.
 
