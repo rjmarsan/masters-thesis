@@ -1,7 +1,7 @@
 \chapter{Conclusion and Future Work}
 \label{sec:conclusion}
 \section{Conclusion}
-AndroMEDA helps users understand the context in which their Personally Identifiable Information is used, which allows them to make more informed decisions on whether an app is action maliciously or not. In this paper, we introduced 3 key items:
+AndroMEDA helps users understand the context in which their Personally Identifiable Information is used, which allows them to make more informed decisions on whether an app is action maliciously or not. In this paper, we introduced 4 key items:
 
 \subsection{User-App Agreement}
 %We analyze the state of Android and Permissions, and conclude the need to addrjess the User-App Agreement, which is a framework for consenting and trusting specific actions an app may take. It lies at the heart of classifying Info Theft Malware. Android Permissions address the capabilities of an app, but fail to address the context and use of those capabilities, which are cruicial to trusting an app's actions.
@@ -12,7 +12,7 @@ We analyzed the current Android security framework: The Permission System, and f
 To perform a full analysis of the current state of Android Permissions, we use a novel dataset, Android Census. By analyzing more than 80\% of apps in the Google Play Store, we are able to better understand the interrelationship of permissions and expected behavior. We produce key insights as to the popularity of apps vs their PII permissions, and when apps deviate from their expected behavior - potentially violating the User-App Agreement. We then analyze a comprehensive malware dataset using the same techniques, and find that many types of malware can be identified purely by it's permission fingerprint. We conclusively show the connection between Permissions and Expected Behavior are present, but not strong enough to differentiate between Info Theft Malware and many popular apps.
 
 \subsection{AndroMEDA}
-Building off the concept of the User-App Agreement, we introduce AndroMEDA. Key parts of the User-App Agreement were previously unnoticable to the user until AndroMEDA. By giving the user more information on the context and use of permissions, they can evaluate whether they trust those actions, and ultimately whether the app is acting maliciously or not. This, in turn, helps mitigate Info Theft Malware on Android.
+Building off the concept of the User-App Agreement, we introduce AndroMEDA. Key parts of the User-App Agreement were previously unnoticable to the user until AndroMEDA. By giving the user more information on the context and use of permissions, they can evaluate whether they trust those actions, and ultimately whether the app is acting maliciously or not. After untrusted behavior is spotted, the actions can be reported, and knowledge can be spread to all users. All of this makes users more aware of app behavior, and helps mitigate Info Theft Malware on Android.
 
 \subsection{IncognitoWare}
 We highlighted the need for more modern Android malware datasets. To address this, we introduced a dataset of IncognitoWare - repackaged trusted apps with additional malicious behavior embedded. We believe this is a more comprehensive look at Android security because it highlights the need to understand context in order to identify malicious behavior.
