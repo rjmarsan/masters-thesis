@@ -123,7 +123,9 @@ Ultimately, however, some odd patterns can be observed. Despite \textit{Read Con
 %\subsubsection{Outliers in \textit{Personalization}}
 Isolating the apps in the dataset from category \textit{Personalization} that use the permission \textit{Read Browser History} provides insight into this odd pattern. The most popular app in \textit{Personalization} to use the permission is an app called Launcher Pro\citep{launcherpro}. Downloaded over 10 Million times, with an average rating of 4.5, LauncherPro is a highly respected 3rd party Android Home Screen. It has 181,628 5 star ratings, and only 8,230 1 star reviews. The permission comes from a set of widgets to access the browser shortcuts from the home screen.
 
+\begin{sloppypar}
 The next most popular apps in \textit{Personalization} that use permission \textit{Read Browser History} are Seabed Live Wallpaper\citep{seabedlivewallpaper} and Heart Live Wallpaper\citep{heartlivewallpaper}, both by the same developer ``Good LiveWallpaper''\citep{goodlivewallpaper}. These two apps have each been downloaded over 1 Million times, and have an average rating of 3.8 and 4.1, respectively. However, the bad reviews for both apps make numerous references to poor behavior, with one user saying ``The sheer number of push ads this single dud of a wallpaper shoves on your phone is astounding.''\citep{seabedlivewallpaper}. It's clear these apps does not use \textit{Read Browser History} for a trusted purpose, but rather for advertising.
+\end{sloppypar}
 
 Despite the fact that the two apps come from the same market category, and use the same permissions, they have vastly different expected behavior and UAA, one of which violates it frequently, and the other is highly trusted. Permissions, while being used rather judiciously in many parts of the market, clearly have times when they are requested without truely needing them. These situations degrade the effectiveness of permissions, because the user lacks a trustworthy reason why the app requires such capabilities.
 
@@ -135,7 +137,7 @@ Despite the fact that the two apps come from the same market category, and use t
 
 
 \section{Android Malware Genome Project}
-Next, we project a malware dataset onto the Android Census, with the goal of idenitifying their Permission Fingerprints as potential outliers. Ideally, all malicious behavior would show up in the permission fingerprint of an app, so therefore it's unique set of capabilities would stand out in the Google Play Store, thus showing a strong correlation between expected behavior and Permission Fingerprint. Upon further exploration, we find many patterns of malware are easily identifiable through the Permission Fingerprint, but some behavior passes by unnoticed, demonstrating the need for AndroMEDA.
+Next, we project a malware dataset onto the Android Census, with the goal of identifying their Permission Fingerprints as potential outliers. Ideally, all malicious behavior would show up in the permission fingerprint of an app, so therefore it's unique set of capabilities would stand out in the Google Play Store, thus showing a strong correlation between expected behavior and Permission Fingerprint. Upon further exploration, we find many patterns of malware are easily identifiable through the Permission Fingerprint, but some behavior passes by unnoticed, demonstrating the need for AndroMEDA.
 
 The dataset we use - the largest academic set of it's kind, is the Android Malware Genome Project\citep{zhou2012dissecting}, from NCSU. Containing almost 1300 samples from 52 families of actual Android malware, it provides the ideal test dataset for Android. 
 
