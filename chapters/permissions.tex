@@ -11,7 +11,7 @@
 
 
 \section{Android Architecture Overview}
-Android is an open-source project, built on Linux. Designed to be a lightweight, modular, extendable, and versatile operating system, Android removed almost all of the typical GNU/Linux stack, and wrote an entire framework from scratch. Built in Java, Android runs the Dalivk VM, a lightweight Java-compatible VM (see Figure \ref{fig:androidoverview}). 
+Android is an open source project, built on Linux. Designed to be a lightweight, modular, extendable, and versatile operating system, Android removed almost all of the typical GNU/Linux stack, and wrote an entire framework from scratch. Built in Java, Android runs the Dalivk VM, a lightweight Java-compatible VM (see Figure \ref{fig:androidoverview}). 
 
 The three major application components of Android are Activities, Services, and Content Providers. They are joined together through the Intent system. Activities are user-facing tasks, and follow the iOS definition of an app. Only one may run at a time, and they have strict lifecycles. Services run in the background and follow a less strict lifecycle. Their main purpose is to perform long-running tasks that do not require user input. Lastly, Content Providers ``manage access to a structured set of data. They encapsulate the data, and provide mechanisms for defining data security. Content providers are the standard interface that connects data in one process with code running in another process''\citep{androidcontentproviders}.
 
