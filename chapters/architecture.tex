@@ -21,7 +21,7 @@ Android, as an open source project, is hosted at \url{source.android.com}\citep{
 \end{center}
 \end{figure}
 
-The architecture, seen in Figure \ref{fig:andromedaoverview}, is organized into two main parts: A collection of hooks in the API, and a system service to collect this information. The collection of hooks in the API calls into a process-wide service that translates them into events that get sent to the global system service. At the start of every new Dalvik process, the process-wide collector installs hooks into the framework that notifies the collector when the APIs are called.
+The architecture, seen in Figure \ref{fig:andromedaoverview}, is organized into two main parts: a collection of hooks in the API, and a system service to collect this information. The collection of hooks in the API calls into a process-wide service that translates them into events that get sent to the global system service. At the start of every new Dalvik process, the process-wide collector installs hooks into the framework that notifies the collector when the APIs are called.
 
 \begin{figure}[t]
 \begin{center}
